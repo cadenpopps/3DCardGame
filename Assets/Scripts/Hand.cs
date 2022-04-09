@@ -4,16 +4,24 @@ using System.Collections.Generic;
 
 public class Hand : MonoBehaviour
 {
-    public static readonly int HandSize = 6;
-
-
+    public static readonly int HandSize = 5;
+    public static readonly int InitialHandSize = 4;
 
 	public Card[] cards;
 
 	public void init(Deck deck) {
 		cards = new Card[HandSize];
-		for(int i = 0; i < HandSize; i++) {
-			cards[i] = deck.drawTop();
+		fillHandFromDeck(deck);
+	}
+
+	private void fillHandFromDeck(Deck deck) {
+		for(int i = 0; i < InitialHandSize; i++) {
+			if(addCardToHand(deck.drawTop())) {
+				Debug.Log("Added card");
+			}
+			else {
+				Debug.Log("Couldn't add card");
+			}
 		}
 	}
 	
@@ -27,8 +35,23 @@ public class Hand : MonoBehaviour
 		}
 	}
 
+	private bool addCardToHand(Card card) {
+		for(int i = 0; i < HandSize; i++) {
+			if(cards[i] == null) {
+				cards[i] = card;
+				cards[i].addHandPrefab(i);	
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void displayHand(){
-		Debug.Log("Hand: " + cards[0].name + " " + cards[1].name + " " + cards[2].name + " " + cards[3].name + " " + cards[4].name + " " + cards[5].name);
+		for(int i = 0; i < HandSize; i++) {
+			if(cards[i] != null) {
+				cards[i].enableHandPrefab();
+			}
+		}
 	}
 
 	// public void print() {

@@ -11,9 +11,12 @@ public class Card
 	public int health;
 	public int attack;
 	public int manaCost;
+	public CardDisplay display;
 	public Sprite sprite;
-
-
+	public GameObject handPrefabResource;
+	public GameObject boardPrefabResource;
+	public GameObject handPrefab;
+	public GameObject boardPrefab;
 	public Card(){}
 
 	public Card(int Id, int Rarity, string Name, int Health, int Attack, int ManaCost, string PathToTexture) {
@@ -24,6 +27,24 @@ public class Card
 		attack = Attack;
 		manaCost = ManaCost;
 		sprite = generateSprite(PathToTexture);
+		handPrefabResource = Resources.Load("Prefabs/Card") as GameObject;
+	}
+
+	public void addHandPrefab(int position) {
+		handPrefab = GameObject.Instantiate(handPrefabResource, new Vector3(UIConstants.PlayerHandLeftOffset + (position * UIConstants.PlayerHandCardSpacing), 150, 0), Quaternion.identity) as GameObject;
+		GameObject playerHand = (GameObject) GameObject.Find("PlayerHand/Canvas");
+		handPrefab.transform.SetParent((Transform) playerHand.transform);
+		display = handPrefab.GetComponentInChildren<CardDisplay>();
+		display.updateDisplay(new[] {name, health.ToString(), attack.ToString(), manaCost.ToString()});
+		handPrefab.SetActive(false); 
+	}
+	
+	public void enableHandPrefab() {
+		handPrefab.SetActive(true); 
+	}
+	
+	public void disableHandPrefab() {
+		handPrefab.SetActive(false); 
 	}
 
 	private Sprite generateSprite(string PathToTexture) {

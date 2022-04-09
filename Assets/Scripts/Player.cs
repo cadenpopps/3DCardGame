@@ -10,7 +10,7 @@ public class Player:MonoBehaviour
 
     void Start()
     {
-       handUI = GameObject.Find("Card").gameObject.GetComponent<CardDisplay>();
+       //handUI = GameObject.Find("Card").gameObject.GetComponent<CardDisplay>();
 
     }
 
@@ -28,9 +28,8 @@ public class Player:MonoBehaviour
         board.placeCard(selectedCard, (int) (boardSpot/4), (int) (boardSpot % 4));
     }
 
-    public void printHand(){
-        handUI.init(hand);
-        handUI.displayText();
+    public void displayHand(){
+        hand.displayHand();
     }
 
 }

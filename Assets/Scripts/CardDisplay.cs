@@ -13,26 +13,26 @@ public class CardDisplay : MonoBehaviour
 	public Text healthText;
 	public Text attackText;
 	public Text manaText;
-
-    public static readonly int HandSize = 6;
-
-    public List<Card> handList;
+	public Sprite sprite;
+	public GameObject handPrefabResource;
+	public GameObject boardPrefabResource;
+	public GameObject handPrefab;
+	public GameObject boardPrefab;
    
-   
-    public void init(Hand handC){
-        for(int i = 0; i < HandSize; i++){
-            handList.Add(handC.cards[i]);
-        }
 
-
+    public void updateDisplay(string[] cardInfo) {
+        nameText.text = " " + cardInfo[0];
+        healthText.text = " " + cardInfo[1];
+        attackText.text = " " + cardInfo[2];
+        manaText.text = " " + cardInfo[3];
     }
 
-    public void displayText(){
-        nameText.text = " " + handList[0].name;
-        healthText.text = " " + handList[0].health;
-        attackText.text = " " + handList[0].attack;
-        manaText.text = " " + handList[0].manaCost;
-    }
+    // public void displayText(){
+    //     nameText.text = " " + handList[0].name;
+    //     healthText.text = " " + handList[0].health;
+    //     attackText.text = " " + handList[0].attack;
+    //     manaText.text = " " + handList[0].manaCost;
+    // }
 
 
 

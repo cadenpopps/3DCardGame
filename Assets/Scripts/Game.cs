@@ -70,8 +70,7 @@ public class Game : MonoBehaviour
                         player.playCard(6, board);
                    }
                    else if(Input.GetKeyDown(KeyCode.Q)){
-                        Debug.Log("Display Hand");
-                        player.printHand();
+                        player.displayHand();
                    }
             }
         }
