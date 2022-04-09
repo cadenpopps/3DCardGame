@@ -10,14 +10,15 @@ public class Player:MonoBehaviour
 
     void Start()
     {
-       
+       handUI = GameObject.Find("Card").gameObject.GetComponent<CardDisplay>();
+
     }
 
     public void init(){
         deck = GameObject.Find("PlayerDeck").gameObject.GetComponent<Deck>();
         hand = GameObject.Find("PlayerHand").gameObject.GetComponent<Hand>();
         deck.init();
-        hand.init(deck);
+        hand.init(deck); 
     }
 
     public void playCard(int cardNum, Board board) {
@@ -29,6 +30,7 @@ public class Player:MonoBehaviour
 
     public void printHand(){
         handUI.init(hand);
+        handUI.displayText();
     }
 
 }

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Card
 {
-	// public Config.CardID id;
-	// public Config.Rarity rarity;
 	public int id;
 	public int rarity;
 	public string name;
@@ -15,22 +13,9 @@ public class Card
 	public int manaCost;
 	public Sprite sprite;
 
-	// public Player owner;
 
-	// public Card(Player owner, Config.CardConfig config) {
-	// 	id = Config.CardID.Default;
-	// 	rarity = Config.Rarity.Common;
-	// 	name = "Default";
-	// 	this.owner = owner;
-	// 	health = config.health;
-	// 	attack = config.attack;
-	// 	manaCost = config.manaCost;
-	// }
-	
 	public Card(){}
 
-
-	// public Card(Player owner, int Id, int Rarity, string Name, int Health, int Attack, int ManaCost) {
 	public Card(int Id, int Rarity, string Name, int Health, int Attack, int ManaCost, string PathToTexture) {
 		id = Id;
 		rarity = Rarity;
