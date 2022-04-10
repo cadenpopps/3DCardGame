@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[System.Serializable]
 
 public class Player:MonoBehaviour
 {
@@ -15,8 +16,6 @@ public class Player:MonoBehaviour
     }
 
     public void init(){
-        deck = GameObject.Find("PlayerDeck").gameObject.GetComponent<Deck>();
-        hand = GameObject.Find("PlayerHand").gameObject.GetComponent<Hand>();
         deck.init();
         hand.init(deck); 
     }
