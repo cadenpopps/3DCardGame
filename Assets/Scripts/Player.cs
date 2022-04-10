@@ -7,7 +7,6 @@ public class Player:MonoBehaviour
 {
     public Deck deck;
     public Hand hand;
-    public CardDisplay handUI;
 
     void Start()
     {
