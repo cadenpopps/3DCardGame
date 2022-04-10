@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Card
 {
-	public int id;
-	public int rarity;
+	public CardID id;
+	public Rarity rarity;
 	public string name;
 	public int health;
 	public int attack;
@@ -19,14 +19,14 @@ public class Card
 	public GameObject boardPrefab;
 	public Card(){}
 
-	public Card(int Id, int Rarity, string Name, int Health, int Attack, int ManaCost, string PathToTexture) {
-		id = Id;
+	public Card(CardID CardId, Rarity Rarity, string Name, int Health, int Attack, int ManaCost) {
+		id = CardId;
 		rarity = Rarity;
 		name = Name;
 		health = Health;
 		attack = Attack;
 		manaCost = ManaCost;
-		sprite = generateSprite(PathToTexture);
+		// sprite = generateSprite(PathToTexture);
 		handPrefabResource = Resources.Load("Prefabs/Card") as GameObject;
 	}
 
@@ -35,7 +35,11 @@ public class Card
 		GameObject playerHand = (GameObject) GameObject.Find("PlayerHand/Canvas");
 		handPrefab.transform.SetParent((Transform) playerHand.transform);
 		display = handPrefab.GetComponentInChildren<CardDisplay>();
-		display.updateDisplay(new[] {name, health.ToString(), attack.ToString(), manaCost.ToString()});
+		display.updateDisplay(new[] {name, health.ToString(), attack.ToString(), manaCost.ToString()}, rarity);
+
+
+
+
 		handPrefab.SetActive(false); 
 	}
 	

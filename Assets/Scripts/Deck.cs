@@ -24,8 +24,8 @@ public class Deck : MonoBehaviour
     {
 		deck = new List<Card>();
 		for(int i = 0; i < DeckSize; i++){ 
-			int x = (int) Random.Range(0,CardDatabase.CardDatabaseSize);
-			deck.Add(CardDatabase.cardList[x]); 
+			// int x = (int) Random.Range(0,CardDatabase.CardDatabaseSize);
+			deck.Add(CardDatabase.generateRandomCard()); 
 			
 		} 
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+[System.Serializable]
 
 public enum Turn {
     Player,
@@ -14,19 +15,18 @@ public enum GameState {
     Paused
 };
 
-
 public class Game : MonoBehaviour
 {
 
-    Player player;
+    public Player player;
     // CPU cpu;
-    Board board;
+    public Board board;
     Turn turn;
     GameState gameState = GameState.GameSetup;
 
 
     void Start() {
-        player = GameObject.Find("Player").gameObject.GetComponent<Player>();
+        // player = GameObject.Find("Player").gameObject.GetComponent<Player>();
         // cpu = GameObject.Find("CPU").gameObject.GetComponent<cpu>();
         board = GameObject.Find("Board").gameObject.GetComponent<Board>();
         this.init();
@@ -70,7 +70,7 @@ public class Game : MonoBehaviour
                         player.playCard(6, board);
                    }
                    else if(Input.GetKeyDown(KeyCode.Q)){
-                        player.displayHand();
+                        player.toggleDisplayHand();
                    }
             }
         }

@@ -28,8 +28,13 @@ public class Player:MonoBehaviour
         board.placeCard(selectedCard, (int) (boardSpot/4), (int) (boardSpot % 4));
     }
 
-    public void displayHand(){
-        hand.displayHand();
+    public void toggleDisplayHand(){
+        if(hand.displaying) {
+            hand.hide();
+        }
+        else {
+            hand.display();
+        }
     }
 
 }
