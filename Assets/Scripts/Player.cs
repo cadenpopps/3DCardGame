@@ -13,15 +13,12 @@ public class Player : MonoBehaviour
         hand.init(deck); 
     }
 
-    public void playCard(int cardNum, Board board) {
-        Card selectedCard = hand.getCard(cardNum - 1);
-        selectedCard.print();
-        int boardSpot = board.getFirstAvailableSpot();
-        board.placeCard(selectedCard, (int) (boardSpot/4), (int) (boardSpot % 4));
+    public void playCard(Board board) {
+        hand.playCard(board);
     }
 
     public void toggleDisplayHand() {
-        if(hand.displaying) {
+        if(hand.displayingHand) {
             hand.hide();
         }
         else {
@@ -31,6 +28,14 @@ public class Player : MonoBehaviour
 
     public void hoverCard(Direction d) {
         hand.hoverCard(d);
+    }
+
+    public void selectCard() {
+        hand.selectCard();
+    }
+    
+    public void deselectCard() {
+        hand.deselectCard();
     }
 
 }

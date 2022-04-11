@@ -56,29 +56,20 @@ public class Game : MonoBehaviour
     void Update() {
         if(gameState == GameState.Running){
             if(this.turn == Turn.Player){
-                   if(Input.GetKeyDown(KeyCode.Alpha1)){
-                        player.playCard(1, board);
-                   }
-                   else if(Input.GetKeyDown(KeyCode.LeftArrow)){
+                   if(Input.GetKeyDown(KeyCode.LeftArrow)){
                         player.hoverCard(Direction.Left);
                    }
                    else if(Input.GetKeyDown(KeyCode.RightArrow)){
                         player.hoverCard(Direction.Right);
                    }
-                   else if(Input.GetKeyDown(KeyCode.Alpha2)){
-                        player.playCard(2, board);
+                   else if(Input.GetKeyDown(KeyCode.UpArrow)){
+                        // Debug.Log("Test");
+                        player.selectCard();
+                        // player.playCard(board);
                    }
-                    else if(Input.GetKeyDown(KeyCode.Alpha3)){
-                        player.playCard(3, board);
-                   }
-                    else if(Input.GetKeyDown(KeyCode.Alpha4)){
-                        player.playCard(4, board);
-                   }
-                    else if(Input.GetKeyDown(KeyCode.Alpha5)){
-                        player.playCard(5, board);
-                   }
-                   else if(Input.GetKeyDown(KeyCode.Alpha6)){
-                        player.playCard(6, board);
+                   else if(Input.GetKeyDown(KeyCode.DownArrow)){
+                        // Debug.Log("Test");
+                        player.deselectCard();
                    }
                    else if(Input.GetKeyDown(KeyCode.Q)){
                         player.toggleDisplayHand();

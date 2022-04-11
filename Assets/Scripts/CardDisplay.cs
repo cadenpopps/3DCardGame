@@ -77,4 +77,14 @@ public class CardDisplay : MonoBehaviour
         }
     }
 
+    public void updateSelected() {
+        if(card.currentlySelected) {
+            card.transform.localPosition = new Vector3(UIConstants.PlayerHandCenterOffset + (card.positionInHand * UIConstants.PlayerHandCardSpacing), UIConstants.CardInHandSelectedOffset, 2);
+        }
+        else {
+
+            card.transform.localPosition = new Vector3(UIConstants.PlayerHandCenterOffset + (card.positionInHand * UIConstants.PlayerHandCardSpacing), UIConstants.CardInHandNotSelectedOffset, 0);
+        }
+    }
+
 }

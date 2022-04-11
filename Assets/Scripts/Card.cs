@@ -14,6 +14,7 @@ public class Card : MonoBehaviour
 	
 	public int positionInHand;
 	public bool currentlyHovered;
+	public bool currentlySelected;
 	
 	public CardDisplay cardDisplay;
 	
@@ -28,6 +29,9 @@ public class Card : MonoBehaviour
 		health = Health;
 		attack = Attack;
 		manaCost = ManaCost;
+
+		currentlyHovered = false;
+		currentlySelected = false;
 
 		cardDisplay = CardInHandObject.GetComponent<CardDisplay>() as CardDisplay;
 		cardDisplay.init(this);

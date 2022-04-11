@@ -11,52 +11,31 @@ public class Board : MonoBehaviour
     public static readonly int BoardWidth = 4;
 	public static readonly int BoardHeight = 2;
 
-	private BoardSpace[,] spaces;
-	private GameObject[,] physicalSpaces;
+	public BoardSpace[,] spaces;
+	public GameObject[,] physicalSpaces;
 
-	// public Sprite cardFace;
-	// public SpriteRenderer sr;
 	public Texture2D tex;
 
-	void Awake() {
-
-	}
+	void Awake() { }
 
     // Start is called before the first frame update
-    void Start()
-    {
-
-		
-		// GameObject img = GameObject.Find("Board_Space1_Image");
-		// img.GetComponent<Image>().sprite = cardFace;
-		// Debug.Log(physicalSpaces[0, 0].GetComponent<RawImage>().texture);
-    	// cardFace = Sprite.Create(SpriteTexture, new Rect(0, 0, SpriteTexture.width, SpriteTexture.height),new Vector2(0,0), 100);
-
-		// cardFace = Resources.Load<Sprite>("Sprites/Gragas_Render.png");
-
-    }
+    void Start() { }
 
 	public Texture2D LoadTexture(string FilePath) {
- 
-     // Load a PNG or JPG file from disk to a Texture2D
-     // Returns null if load fails
- 
-     Texture2D Tex2D;
-     byte[] FileData;
- 
-     if (File.Exists(FilePath)){
-       FileData = File.ReadAllBytes(FilePath);
-       Tex2D = new Texture2D(2, 2);           // Create new "empty" texture
-       if (Tex2D.LoadImage(FileData))           // Load the imagedata into the texture (size is set automatically)
-         return Tex2D;                 // If data = readable -> return texture
-     }  
-     return null;                     // Return null if load failed
+		// Load a PNG or JPG file from disk to a Texture2D
+		// Returns null if load fails
+	
+		Texture2D Tex2D;
+		byte[] FileData;
+	
+		if (File.Exists(FilePath)){
+		FileData = File.ReadAllBytes(FilePath);
+		Tex2D = new Texture2D(2, 2);           // Create new "empty" texture
+		if (Tex2D.LoadImage(FileData))           // Load the imagedata into the texture (size is set automatically)
+			return Tex2D;                 // If data = readable -> return texture
+		}  
+		return null;                     // Return null if load failed
    	}
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void init() {
 		physicalSpaces = new GameObject[BoardHeight, BoardWidth];
@@ -65,16 +44,19 @@ public class Board : MonoBehaviour
 		for(int row = 0; row < BoardHeight; row++) {
 			for(int col = 0; col < BoardWidth; col++) {
 				spaces[row, col] = new BoardSpace();
-				physicalSpaces[row, col] = GameObject.Find("Board_Space" + ((row * BoardWidth) + col + 1).ToString());
+				physicalSpaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString());
 			}
 		} 
     }
     
-    public bool placeCard(Card card, int row, int column) {
-		if(row < BoardHeight && column < BoardWidth && !spaces[row, column].occupied) {
+    public bool addCard(int row, int column, Card card) {
+		if(row >= 0 && column >= 0 && row < BoardHeight && column < BoardWidth && !spaces[row, column].occupied) {
 			spaces[row, column].cardReference = card;
 			spaces[row, column].occupied = true;
-			// physicalSpaces[row, column].GetComponent<SpriteRenderer>().sprite = card.sprite;
+			card.CardObject.transform.parent = physicalSpaces[row, column].transform; 
+            card.CardObject.transform.localScale = new Vector3(UIConstants.CardOnBoardSize, UIConstants.CardOnBoardSize, UIConstants.CardOnBoardSize);
+            card.CardObject.transform.localPosition = new Vector3(0, 0, 0);
+            card.CardObject.transform.localRotation = Quaternion.identity;
 			return true;
 		}
 		else {
@@ -103,4 +85,15 @@ public class Board : MonoBehaviour
 			System.Console.WriteLine("\n");
 		}
 	}
+
+    void Update()
+    {
+		// for(int row = 0; row < BoardHeight; row++) {
+		// 	for(int col = 0; col < BoardWidth; col++) {
+		// 		if(physicalSpaces[row, col] != null) {
+		// 			physicalSpaces[row,col].cardDisplay.();
+		// 		}
+		// 	}
+		// }
+    }
 }

@@ -11,8 +11,10 @@ public class Hand : MonoBehaviour
 
 	public Card[] cards;
 	
-	public bool displaying = false;
+	public bool displayingHand = false;
+	public bool displayingSelected = false;
 	public int currentlyHovered = 0;
+	public int currentlySelected = -1;
 	
 	public GameObject HandObject;
 
@@ -37,7 +39,7 @@ public class Hand : MonoBehaviour
 			}
 		}
 
-		// cards[currentlyFocused].CardDisplay
+		cards[currentlyHovered].currentlyHovered = true;
 	}
 	
 	public Card getCard(int cardNum) {
@@ -82,22 +84,65 @@ public class Hand : MonoBehaviour
 		}
 		return false;
 	}
+	
+	private void removeCardFromHand(int cardIndex) {
+		if(cards[cardIndex] != null) {
+			cards[cardIndex] = null;
+			for(int i = 0; i < HandSize; i++) {
+				if(cards[i] == null) {
+					for(int j = i; j < HandSize - 1; j++) {
+						cards[j] = cards[j + 1];
+					}
+					cards[HandSize - 1] = null;
+					break;
+				}
+			}
+		}
+	}
 
 	public void display(){
-		displaying = true;
+		displayingHand = true;
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] != null) {
-				cards[i].enableHandPrefab();
+				Card card = cards[i];
+				card.enableHandPrefab();
+				card.CardObject.transform.localPosition = Vector3.one;
+				card.CardObject.transform.localRotation = Quaternion.identity;
+				card.CardObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 			}
 		}
 	}
 
 	public void hide(){
-		displaying = false;
+		displayingHand = false;
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] != null) {
 				cards[i].disableHandPrefab();
 			}
+		}
+	}
+
+	public void playCard(Board board) {
+		if(!board.spaces[1, 0].occupied) {
+			Debug.Log(board);
+			board.addCard(1 , 0, cards[currentlySelected]);
+			this.removeCardFromHand(currentlySelected);
+		}
+	}
+
+	public void selectCard() {
+		if(cards[currentlyHovered] != null) {
+			displayingSelected = true;
+			currentlySelected = currentlyHovered;
+			cards[currentlySelected].currentlySelected = true;
+		}
+	}
+	
+	public void deselectCard() {
+		if(cards[currentlySelected] != null) {
+			displayingSelected = false;
+			cards[currentlySelected].currentlySelected = false;
+			currentlySelected = -1;
 		}
 	}
 	
@@ -111,7 +156,7 @@ public class Hand : MonoBehaviour
 			cards[currentlyHovered].currentlyHovered = false;
 			newHovered = currentlyHovered - 1;
 			if(newHovered < 0) {
-				newHovered = HandSize;
+				newHovered = HandSize - 1;
 			}
 			while(cards[newHovered] == null) {
 				newHovered = currentlyHovered - 1;
@@ -143,7 +188,16 @@ public class Hand : MonoBehaviour
     }
 
 	void Update() {
-		if(displaying) {
+		if(displayingSelected) {
+			for(int i = 0; i < HandSize; i++) {
+				if(cards[i] != null) {
+					cards[i].updatePosition(i);
+					cards[i].cardDisplay.updatePosition();
+					cards[i].cardDisplay.updateSelected();
+				}
+			}
+		}
+		else if(displayingHand) {
 			for(int i = 0; i < HandSize; i++) {
 				if(cards[i] != null) {
 					cards[i].updatePosition(i);
@@ -153,16 +207,4 @@ public class Hand : MonoBehaviour
 			}
 		}
 	}
-
-	// public void print() {
-	// 	for(int i = 0; i < HandSize; i++) {
-	// 		if(cards[i] != null) {
-	// 			cards[i].print();
-	// 			//System.Console.Write(" ");
-	// 		}
-	// 		else {
-	// 			System.Console.Write("Empty ");
-	// 		}
-	// 	}
-	// }
 }
