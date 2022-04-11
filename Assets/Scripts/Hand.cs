@@ -75,14 +75,23 @@ public class Hand : MonoBehaviour
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] == null) {
 				cards[i] = card;
-				card.CardObject.transform.parent = HandObject.transform;
-				card.CardObject.transform.localPosition = Vector3.one;
-				card.CardObject.transform.localRotation = Quaternion.identity;
-				card.CardObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+				this.setCardTransformToHand(card);
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private void setCardTransformToHand(Card card) { 
+		if(card != null) {
+			card.CardObject.transform.parent = HandObject.transform;
+			card.CardObject.transform.localPosition = Vector3.zero;
+			card.CardObject.transform.localRotation = Quaternion.identity;
+			card.CardObject.transform.localScale = new Vector3(UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize);
+		}
+		else {
+			Debug.Log("Card reference is null.");
+		}
 	}
 	
 	private void removeCardFromHand(int cardIndex) {
@@ -100,7 +109,13 @@ public class Hand : MonoBehaviour
 		}
 	}
 
-	public void display(){
+	public void resetDisplay() {
+		this.resetHover();
+		this.deselectCard();
+		this.hide();
+	}
+
+	public void display() {
 		displayingHand = true;
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] != null) {
@@ -115,6 +130,8 @@ public class Hand : MonoBehaviour
 
 	public void hide(){
 		displayingHand = false;
+		this.deselectCard();
+		this.resetHover();
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] != null) {
 				cards[i].disableHandPrefab();
@@ -139,13 +156,48 @@ public class Hand : MonoBehaviour
 	}
 	
 	public void deselectCard() {
-		if(cards[currentlySelected] != null) {
-			cards[currentlySelected].currentlySelected = false;
+		if(currentlySelected != -1) {
+			if(cards[currentlySelected] != null) {
+				cards[currentlySelected].currentlySelected = false;
+				this.setCardTransformToHand(cards[currentlySelected]);
+			}
+			currentlyHovered = currentlySelected;
+			this.updateHover();
+		}
+		else {
+			this.resetHover();
 		}
 		displayingSelected = false;
-		currentlyHovered = currentlySelected;
-		this.updateHover();
 		currentlySelected = -1;
+	}
+
+	public void moveSelected(Direction d, Board board) {
+		int row = 0;
+		BoardSpace newBoardSpace;
+		if(board.getOpenSpaces(row) <= 1) {
+			Debug.Log("No open board spaces to move to.");
+		}
+		else if(d == Direction.Left) {
+			newBoardSpace = board.getFirstSpaceLeft(row, cards[currentlySelected].selectedBoardSpace);
+			if(newBoardSpace != null) {
+				cards[currentlySelected].selectedBoardSpace = newBoardSpace;
+			}
+			else {
+				Debug.Log("Board returned a null board space, not moving selection.");
+			}
+		}
+		else if(d == Direction.Right) {
+			newBoardSpace = board.getFirstSpaceRight(row, cards[currentlySelected].selectedBoardSpace);
+			if(newBoardSpace != null) {
+				cards[currentlySelected].selectedBoardSpace = newBoardSpace;
+			}
+			else {
+				Debug.Log("Board returned a null board space, not moving selection.");
+			}
+		}
+		else {
+			Debug.Log("Unrecognized direction");
+		}
 	}
 	
     public void hoverCard(Direction d) {

@@ -53,30 +53,59 @@ public class Game : MonoBehaviour
 
     }
 
+    void changeTurn() {
+        if(turn == Turn.Player) {
+            turn = Turn.CPU;
+        }
+        else if(turn == Turn.CPU) {
+            turn = Turn.Player;
+        }
+    }
+
     void Update() {
         if(gameState == GameState.Running){
             if(this.turn == Turn.Player){
-                   if(Input.GetKeyDown(KeyCode.LeftArrow)){
-                        player.hoverCard(Direction.Left);
-                   }
-                   else if(Input.GetKeyDown(KeyCode.RightArrow)){
-                        player.hoverCard(Direction.Right);
-                   }
-                   else if(Input.GetKeyDown(KeyCode.UpArrow)){
+                if(Input.GetKeyDown(KeyCode.LeftArrow)){
+                    if(player.hand.displayingHand) {
+                        if(player.hand.displayingSelected) {
+                            player.moveSelected(Direction.Left, board);
+                        }
+                        else {
+                            player.hoverCard(Direction.Left);
+                        }
+                    }
+                }
+                else if(Input.GetKeyDown(KeyCode.RightArrow)){
+                    if(player.hand.displayingHand) {
+                        if(player.hand.displayingSelected) {
+                            player.moveSelected(Direction.Right, board);
+                        }
+                        else {
+                            player.hoverCard(Direction.Right);
+                        }
+                    }
+                }
+                else if(Input.GetKeyDown(KeyCode.UpArrow)){
+                    if(player.hand.displayingHand) {
                         if(player.hand.displayingSelected) {
                             player.playCard(board);
                         }
                         else {
                             player.selectCard(board);
                         }
-                   }
-                   else if(Input.GetKeyDown(KeyCode.DownArrow)){
-                        // Debug.Log("Test");
+                    }
+                }
+                else if(Input.GetKeyDown(KeyCode.DownArrow)){
+                    if(player.hand.displayingHand) {
                         player.deselectCard();
-                   }
-                   else if(Input.GetKeyDown(KeyCode.Q)){
-                        player.toggleDisplayHand();
-                   }
+                    }
+                }
+                else if(Input.GetKeyDown(KeyCode.Q)){
+                    player.toggleDisplayHand();
+                }
+                else if(Input.GetKeyDown(KeyCode.Return)){
+                    player.endTurn();
+                }
             }
         }
     }
