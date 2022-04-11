@@ -38,6 +38,7 @@ public enum Rarity {
 public class CardDatabase : MonoBehaviour
 {
 
+    public static List<Rarity> probabilityStruct = new List<Rarity>();
 
 
     public static Card generateCard(CardID cardId, GameObject CardPrefab) {
@@ -107,9 +108,7 @@ public class CardDatabase : MonoBehaviour
         }
     }
     
-    public static Card generateRandomCard(GameObject CardPrefab) {
-        var probabilityStruct = new List<Rarity>();
-
+    public static void probInit(){
         for(int i = 0; i < 110; i++){
             switch(i) {
                 case int n when (i < 45):
@@ -132,6 +131,10 @@ public class CardDatabase : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public static Card generateRandomCard(GameObject CardPrefab) {
+
         
         var rarityIndex = System.Enum.GetValues(typeof(CardID));
         Rarity selectedRarity = probabilityStruct[Random.Range(1, rarityIndex.Length)];
@@ -139,10 +142,10 @@ public class CardDatabase : MonoBehaviour
 
         // CardID selectedRarity = (CardID) cardIds.GetValue(Random.Range(1, cardIds.Length))
         // Rarity selectedRarity = probabilityStruct[rarityIndex];
-        CardID temp = CardID.Epic;
-        if(selectedRarity == Rarity.Common){
+        // CardID temp = CardID.Epic;
+        // if(selectedRarity == Rarity.Common){
 
-        }
+        // }
 
         var cardIds = System.Enum.GetValues(typeof(CardID));
         return generateCard((CardID) cardIds.GetValue(Random.Range(1, cardIds.Length)), CardPrefab);

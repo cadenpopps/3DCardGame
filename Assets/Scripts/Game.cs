@@ -105,6 +105,7 @@ public class Game : MonoBehaviour
                 }
                 else if(Input.GetKeyDown(KeyCode.Return)){
                     player.endTurn();
+                    this.changeTurn();
                 }
             }
         }
