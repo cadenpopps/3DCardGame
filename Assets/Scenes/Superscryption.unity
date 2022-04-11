@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: 520668855}
   - component: {fileID: 520668854}
   - component: {fileID: 520668853}
+  - component: {fileID: 520668856}
   m_Layer: 0
   m_Name: BoardSpace6
   m_TagString: Untagged
@@ -383,6 +384,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &520668856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520668851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 520668851}
 --- !u!1 &754601993
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +465,7 @@ GameObject:
   - component: {fileID: 789245281}
   - component: {fileID: 789245280}
   - component: {fileID: 789245279}
+  - component: {fileID: 789245282}
   m_Layer: 0
   m_Name: BoardSpace3
   m_TagString: Untagged
@@ -534,6 +551,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &789245282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789245277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 789245277}
 --- !u!1 &862290406
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,6 +797,7 @@ GameObject:
   - component: {fileID: 906753157}
   - component: {fileID: 906753156}
   - component: {fileID: 906753155}
+  - component: {fileID: 906753158}
   m_Layer: 0
   m_Name: BoardSpace1
   m_TagString: Untagged
@@ -850,6 +883,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &906753158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906753153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 906753153}
 --- !u!1 &1105785001
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,6 +910,7 @@ GameObject:
   - component: {fileID: 1105785005}
   - component: {fileID: 1105785004}
   - component: {fileID: 1105785003}
+  - component: {fileID: 1105785006}
   m_Layer: 0
   m_Name: BoardSpace8
   m_TagString: Untagged
@@ -947,6 +996,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1105785006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105785001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 1105785001}
 --- !u!1 &1237508704
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,6 +1154,7 @@ GameObject:
   - component: {fileID: 1283232773}
   - component: {fileID: 1283232772}
   - component: {fileID: 1283232771}
+  - component: {fileID: 1283232774}
   m_Layer: 0
   m_Name: BoardSpace2
   m_TagString: Untagged
@@ -1175,6 +1240,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1283232774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283232769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 1283232769}
 --- !u!1 &1325790166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1530,6 +1610,7 @@ GameObject:
   - component: {fileID: 1779538689}
   - component: {fileID: 1779538688}
   - component: {fileID: 1779538687}
+  - component: {fileID: 1779538690}
   m_Layer: 0
   m_Name: BoardSpace7
   m_TagString: Untagged
@@ -1615,6 +1696,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1779538690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779538685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 1779538685}
 --- !u!1 &1989385257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,6 +1802,7 @@ GameObject:
   - component: {fileID: 1997048182}
   - component: {fileID: 1997048181}
   - component: {fileID: 1997048180}
+  - component: {fileID: 1997048183}
   m_Layer: 0
   m_Name: BoardSpace4
   m_TagString: Untagged
@@ -1791,6 +1888,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1997048183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997048178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 1997048178}
 --- !u!1 &2052841924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1898,6 +2010,7 @@ GameObject:
   - component: {fileID: 2065816799}
   - component: {fileID: 2065816798}
   - component: {fileID: 2065816797}
+  - component: {fileID: 2065816800}
   m_Layer: 0
   m_Name: BoardSpace5
   m_TagString: Untagged
@@ -1983,6 +2096,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2065816800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065816795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c2dffedb8d9c4ca8b4cb953cd1a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupied: 0
+  cardReference: {fileID: 0}
+  boardSpaceObject: {fileID: 2065816795}
 --- !u!1 &2113814305
 GameObject:
   m_ObjectHideFlags: 0

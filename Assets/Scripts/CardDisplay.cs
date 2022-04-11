@@ -79,10 +79,12 @@ public class CardDisplay : MonoBehaviour
 
     public void updateSelected() {
         if(card.currentlySelected) {
-            card.transform.localPosition = new Vector3(UIConstants.PlayerHandCenterOffset + (card.positionInHand * UIConstants.PlayerHandCardSpacing), UIConstants.CardInHandSelectedOffset, 2);
+            card.transform.parent = card.selectedBoardSpace.boardSpaceObject.transform;
+            card.CardObject.transform.localScale = new Vector3(UIConstants.SelectedCardOnBoardSize, UIConstants.SelectedCardOnBoardSize, UIConstants.SelectedCardOnBoardSize);
+            card.CardObject.transform.localPosition = new Vector3(0, 0, UIConstants.SelectedCardOnBoardZOffset);
+            card.CardObject.transform.localRotation = Quaternion.identity;
         }
         else {
-
             card.transform.localPosition = new Vector3(UIConstants.PlayerHandCenterOffset + (card.positionInHand * UIConstants.PlayerHandCardSpacing), UIConstants.CardInHandNotSelectedOffset, 0);
         }
     }
