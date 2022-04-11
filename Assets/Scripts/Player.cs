@@ -30,8 +30,8 @@ public class Player : MonoBehaviour
         hand.hoverCard(d);
     }
 
-    public void selectCard() {
-        hand.selectCard();
+    public void selectCard(Board b) {
+        hand.selectCard(b);
     }
     
     public void deselectCard() {

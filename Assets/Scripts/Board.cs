@@ -12,7 +12,6 @@ public class Board : MonoBehaviour
 	public static readonly int BoardHeight = 2;
 
 	public BoardSpace[,] spaces;
-	public GameObject[,] physicalSpaces;
 
 	public Texture2D tex;
 
@@ -21,39 +20,21 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Start() { }
 
-	public Texture2D LoadTexture(string FilePath) {
-		// Load a PNG or JPG file from disk to a Texture2D
-		// Returns null if load fails
-	
-		Texture2D Tex2D;
-		byte[] FileData;
-	
-		if (File.Exists(FilePath)){
-		FileData = File.ReadAllBytes(FilePath);
-		Tex2D = new Texture2D(2, 2);           // Create new "empty" texture
-		if (Tex2D.LoadImage(FileData))           // Load the imagedata into the texture (size is set automatically)
-			return Tex2D;                 // If data = readable -> return texture
-		}  
-		return null;                     // Return null if load failed
-   	}
-
     public void init() {
-		physicalSpaces = new GameObject[BoardHeight, BoardWidth];
-
         spaces = new BoardSpace[BoardHeight, BoardWidth];
 		for(int row = 0; row < BoardHeight; row++) {
 			for(int col = 0; col < BoardWidth; col++) {
-				spaces[row, col] = new BoardSpace();
-				physicalSpaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString());
+				spaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString()).GetComponent<BoardSpace>() as BoardSpace;
+				spaces[row, col].init();
 			}
 		} 
     }
     
-    public bool addCard(int row, int column, Card card) {
-		if(row >= 0 && column >= 0 && row < BoardHeight && column < BoardWidth && !spaces[row, column].occupied) {
-			spaces[row, column].cardReference = card;
-			spaces[row, column].occupied = true;
-			card.CardObject.transform.parent = physicalSpaces[row, column].transform; 
+    public bool addCard(Card card, BoardSpace selectedBoardSpace) {
+		if(!selectedBoardSpace.occupied) {
+			selectedBoardSpace.cardReference = card;
+			selectedBoardSpace.occupied = true;
+			card.CardObject.transform.parent = selectedBoardSpace.boardSpaceObject.transform; 
             card.CardObject.transform.localScale = new Vector3(UIConstants.CardOnBoardSize, UIConstants.CardOnBoardSize, UIConstants.CardOnBoardSize);
             card.CardObject.transform.localPosition = new Vector3(0, 0, 0);
             card.CardObject.transform.localRotation = Quaternion.identity;
@@ -64,36 +45,15 @@ public class Board : MonoBehaviour
 		}
 	}
 
-	public int getFirstAvailableSpot() {
-		for(int row = 0; row < BoardHeight; row++) {
-			for(int col = 0; col < BoardWidth; col++) {
-				if(!spaces[row, col].occupied) {
-					return (row * BoardWidth) + col;
-				}
+	public BoardSpace getFirstAvailableSpacePlayer() {
+		for(int col = 0; col < BoardWidth; col++) {
+			if(!spaces[0, col].occupied) {
+				return spaces[0, col];
 			}
 		}
-		return -1;
-	}
-
-	public void print() {
-		System.Console.WriteLine();
-		for(int row = 0; row < BoardHeight; row++) {
-			for(int col = 0; col < BoardWidth; col++) {
-				System.Console.Write(" ");
-				spaces[row, col].print();
-			}
-			System.Console.WriteLine("\n");
-		}
+		return null;
 	}
 
     void Update()
-    {
-		// for(int row = 0; row < BoardHeight; row++) {
-		// 	for(int col = 0; col < BoardWidth; col++) {
-		// 		if(physicalSpaces[row, col] != null) {
-		// 			physicalSpaces[row,col].cardDisplay.();
-		// 		}
-		// 	}
-		// }
-    }
+    { }
 }

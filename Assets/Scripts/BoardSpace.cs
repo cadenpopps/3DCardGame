@@ -1,18 +1,15 @@
-public class BoardSpace
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+[System.Serializable]
+
+public class BoardSpace : MonoBehaviour
 {
     public bool occupied;
 	public Card cardReference;
+	public GameObject boardSpaceObject;
 
-	public BoardSpace() {
+	public void init() {
 		occupied = false;
-	}
-
-	public void print() {
-		if(this.occupied) {
-			cardReference.print();
-		}
-		else {
-			System.Console.Write("Blank");
-		}
 	}
 }

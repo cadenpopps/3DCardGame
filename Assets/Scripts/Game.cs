@@ -63,10 +63,12 @@ public class Game : MonoBehaviour
                         player.hoverCard(Direction.Right);
                    }
                    else if(Input.GetKeyDown(KeyCode.UpArrow)){
-                        // Debug.Log("Test");
-                        // if(player.hand.currentlySelected
-                        player.selectCard();
-                        // player.playCard(board);
+                        if(player.hand.displayingSelected) {
+                            player.playCard(board);
+                        }
+                        else {
+                            player.selectCard(board);
+                        }
                    }
                    else if(Input.GetKeyDown(KeyCode.DownArrow)){
                         // Debug.Log("Test");

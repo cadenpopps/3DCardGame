@@ -123,27 +123,29 @@ public class Hand : MonoBehaviour
 	}
 
 	public void playCard(Board board) {
-		if(!board.spaces[1, 0].occupied) {
-			Debug.Log(board);
-			board.addCard(1 , 0, cards[currentlySelected]);
-			this.removeCardFromHand(currentlySelected);
-		}
+		board.addCard(cards[currentlySelected], cards[currentlySelected].selectedBoardSpace);
+		this.removeCardFromHand(currentlySelected);
+		this.deselectCard();
+		this.resetHover();
 	}
 
-	public void selectCard() {
-		if(cards[currentlyHovered] != null) {
+	public void selectCard(Board board) {
+		if(cards[currentlyHovered] != null && board.getFirstAvailableSpacePlayer() != null) {
 			displayingSelected = true;
 			currentlySelected = currentlyHovered;
 			cards[currentlySelected].currentlySelected = true;
+			cards[currentlySelected].selectedBoardSpace = board.getFirstAvailableSpacePlayer();
 		}
 	}
 	
 	public void deselectCard() {
 		if(cards[currentlySelected] != null) {
-			displayingSelected = false;
 			cards[currentlySelected].currentlySelected = false;
-			currentlySelected = -1;
 		}
+		displayingSelected = false;
+		currentlyHovered = currentlySelected;
+		this.updateHover();
+		currentlySelected = -1;
 	}
 	
     public void hoverCard(Direction d) {
@@ -159,13 +161,12 @@ public class Hand : MonoBehaviour
 				newHovered = HandSize - 1;
 			}
 			while(cards[newHovered] == null) {
-				newHovered = currentlyHovered - 1;
+				newHovered = newHovered - 1;
 				if(newHovered < 0) {
-					newHovered = HandSize;
+					newHovered = HandSize - 1;
 				}
 			}
 			currentlyHovered = newHovered;
-			cards[currentlyHovered].currentlyHovered = true;
 		}
 		else if(d == Direction.Right) {
 			cards[currentlyHovered].currentlyHovered = false;
@@ -173,19 +174,35 @@ public class Hand : MonoBehaviour
 			if(newHovered >= HandSize) {
 				newHovered = 0;
 			}
-			while(cards[newHovered] == null) {
-				newHovered = currentlyHovered + 1;
+			while(isHandScrollable() && cards[newHovered] == null) {
+				newHovered = newHovered + 1;
 				if(newHovered >= HandSize) {
 					newHovered = 0;
 				}
 			}
 			currentlyHovered = newHovered;
-			cards[currentlyHovered].currentlyHovered = true;
 		}
 		else {
 			Debug.Log("Unrecognized direction");
 		}
+		this.updateHover();
     }
+
+	public void updateHover() {
+		for(int i = 0; i < HandSize; i++) {
+			if(i == currentlyHovered && cards[i] != null) {
+				cards[i].currentlyHovered = true;
+			}
+			else if(cards[i] != null) {
+				cards[i].currentlyHovered = false;
+			}
+		}
+	}
+
+	public void resetHover() {
+		currentlyHovered = 0;
+		this.updateHover();
+	}
 
 	void Update() {
 		if(displayingSelected) {
