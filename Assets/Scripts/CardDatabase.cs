@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[System.Serializable]
 
 public enum CardID {
     Null,
@@ -22,25 +23,45 @@ public enum Rarity {
 
 public class CardDatabase : MonoBehaviour
 {
-    public static Card generateCard(CardID cardId) {
+    public static Card generateCard(CardID cardId, GameObject CardPrefab) {
+        GameObject cardObject;
+        Card card;
         switch(cardId) {
             case CardID.Gragas:
-                return new Card(CardID.Gragas, Rarity.Common, "Gragas", 2, 1, 1);
+                cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
+                card = cardObject.GetComponent<Card>() as Card;
+                card.init(cardObject, CardID.Gragas, Rarity.Common, "Gragas", 2, 1, 1);
+                return card;
             case CardID.Jinx:
-                return new Card(CardID.Jinx, Rarity.Uncommon, "Jinx", 1, 2, 1);
+                cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
+                card = cardObject.GetComponent<Card>() as Card;
+                card.init(cardObject, CardID.Jinx, Rarity.Uncommon, "Jinx", 1, 2, 1);
+                return card;
             case CardID.Lux:
-                return new Card(CardID.Lux, Rarity.Rare, "Lux", 1, 3, 2);
+                cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
+                card = cardObject.GetComponent<Card>() as Card;
+                card.init(cardObject, CardID.Lux, Rarity.Rare, "Lux", 1, 3, 2);
+                return card;
             case CardID.Darius:
-                return new Card(CardID.Darius, Rarity.Epic, "Darius", 3, 3, 3);
+                cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
+                card = cardObject.GetComponent<Card>() as Card;
+                card.init(cardObject, CardID.Darius, Rarity.Epic, "Darius", 3, 3, 3);
+                return card;
             case CardID.Vladimir:
-                return new Card(CardID.Vladimir, Rarity.Legendary, "Vladimir", 4, 5, 5);
+                cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
+                card = cardObject.GetComponent<Card>() as Card;
+                card.init(cardObject, CardID.Vladimir, Rarity.Legendary, "Vladimir", 4, 5, 5);
+                return card;
             default:
-                return new Card(CardID.Null, Rarity.Null, "Null", 0, 0, 0);
+                cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
+                card = cardObject.GetComponent<Card>() as Card;
+                card.init(cardObject, CardID.Null, Rarity.Null, "Null", 0, 0, 0);
+                return card;
         }
     }
     
-    public static Card generateRandomCard() {
+    public static Card generateRandomCard(GameObject CardPrefab) {
         var cardIds = System.Enum.GetValues(typeof(CardID));
-        return generateCard((CardID) cardIds.GetValue(Random.Range(1, cardIds.Length)));
+        return generateCard((CardID) cardIds.GetValue(Random.Range(1, cardIds.Length)), CardPrefab);
     }
 }

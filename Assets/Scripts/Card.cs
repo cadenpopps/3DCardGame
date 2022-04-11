@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 
-public class Card
+public class Card : MonoBehaviour
 {
 	public CardID id;
 	public Rarity rarity;
@@ -11,51 +11,40 @@ public class Card
 	public int health;
 	public int attack;
 	public int manaCost;
-	public CardDisplay display;
-	public Sprite sprite;
-	public GameObject handPrefabResource;
-	public GameObject boardPrefabResource;
-	public GameObject handPrefab;
-	public GameObject boardPrefab;
-	public Card(){}
+	
+	public int positionInHand;
+	public bool currentlyHovered;
+	
+	public CardDisplay cardDisplay;
+	
+	public GameObject CardInHandObject;
+	public GameObject CardObject;
 
-	public Card(CardID CardId, Rarity Rarity, string Name, int Health, int Attack, int ManaCost) {
+	public void init(GameObject cardObject, CardID CardId, Rarity Rarity, string Name, int Health, int Attack, int ManaCost) {
+		CardObject = cardObject;
 		id = CardId;
 		rarity = Rarity;
 		name = Name;
 		health = Health;
 		attack = Attack;
 		manaCost = ManaCost;
-		// sprite = generateSprite(PathToTexture);
-		handPrefabResource = Resources.Load("Prefabs/Card") as GameObject;
-	}
 
-	public void addHandPrefab(int position) {
-		handPrefab = GameObject.Instantiate(handPrefabResource, new Vector3(UIConstants.PlayerHandLeftOffset + (position * UIConstants.PlayerHandCardSpacing), 150, 0), Quaternion.identity) as GameObject;
-		GameObject playerHand = (GameObject) GameObject.Find("PlayerHand/Canvas");
-		handPrefab.transform.SetParent((Transform) playerHand.transform);
-		display = handPrefab.GetComponentInChildren<CardDisplay>();
-		display.updateDisplay(new[] {name, health.ToString(), attack.ToString(), manaCost.ToString()}, rarity);
+		cardDisplay = CardInHandObject.GetComponent<CardDisplay>() as CardDisplay;
+		cardDisplay.init(this);
 
-
-
-
-		handPrefab.SetActive(false); 
+		// .init(this);
 	}
 	
 	public void enableHandPrefab() {
-		handPrefab.SetActive(true); 
+		cardDisplay.inHandPrefab.SetActive(true); 
 	}
 	
 	public void disableHandPrefab() {
-		handPrefab.SetActive(false); 
+		cardDisplay.inHandPrefab.SetActive(false); 
 	}
 
-	private Sprite generateSprite(string PathToTexture) {
-		Texture2D tex = Resources.Load<Texture2D>(PathToTexture);
-		Sprite temp = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 800);
-		// temp.transform.Rotate(new Vector3(90, 0, 0));
-		return temp;
+	public void updatePosition(int pos) {
+		positionInHand = pos;
 	}
 
     public void print() {

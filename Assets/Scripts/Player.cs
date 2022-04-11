@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 
-public class Player:MonoBehaviour
+public class Player : MonoBehaviour
 {
     public Deck deck;
     public Hand hand;
-
-    void Start()
-    {
-       //handUI = GameObject.Find("Card").gameObject.GetComponent<CardDisplay>();
-
-    }
 
     public void init(){
         deck.init();
@@ -26,13 +20,17 @@ public class Player:MonoBehaviour
         board.placeCard(selectedCard, (int) (boardSpot/4), (int) (boardSpot % 4));
     }
 
-    public void toggleDisplayHand(){
+    public void toggleDisplayHand() {
         if(hand.displaying) {
             hand.hide();
         }
         else {
             hand.display();
         }
+    }
+
+    public void hoverCard(Direction d) {
+        hand.hoverCard(d);
     }
 
 }

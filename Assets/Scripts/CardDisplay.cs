@@ -2,60 +2,79 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+[System.Serializable]
 
 public class CardDisplay : MonoBehaviour
 {
-
-    public Text idText;
-	public Text rarityText; 
+    
 	public Text nameText;
 	public Text healthText;
 	public Text attackText;
 	public Text manaText;
-    public GameObject card;
-	public Sprite sprite;
-	public GameObject handPrefabResource;
-	public GameObject boardPrefabResource;
-	public GameObject handPrefab;
-	public GameObject boardPrefab;
-   
+	public GameObject inHandPrefab;
+	public GameObject onBoardPrefab;
+	public Card card;
 
-    public void updateDisplay(string[] cardInfo, Rarity rarity) {
-        nameText.text = " " + cardInfo[0];
-        healthText.text = " " + cardInfo[1];
-        attackText.text = " " + cardInfo[2];
-        manaText.text = " " + cardInfo[3];
-        switch(rarity) {
+    public void init(Card c) {
+        card = c;
+        this.addHandPrefab();
+    }
+    
+	public void addHandPrefab() {
+		this.updateDisplay();
+		inHandPrefab.transform.SetParent(card.CardObject.transform);
+        inHandPrefab.transform.localPosition = Vector3.zero;
+		inHandPrefab.SetActive(false); 
+	}
+
+	private Sprite generateSprite(string PathToTexture) {
+		Texture2D tex = Resources.Load<Texture2D>(PathToTexture);
+		Sprite temp = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 800);
+		return temp;
+	}
+
+    public void updateDisplay() {
+        nameText.text = card.name.ToString();
+        healthText.text = card.health.ToString();
+        attackText.text = card.attack.ToString();
+        manaText.text = card.manaCost.ToString();
+        this.updateRarity();
+    }
+
+    public void updateRarity() {
+        switch(card.rarity) {
             case Rarity.Common:
-                card.GetComponent<Image>().color = new Color32(0,208,255, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(0,208,255, 255);
                 break;
             case Rarity.Uncommon:
-                card.GetComponent<Image>().color = new Color32(115,15,255, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(115,15,255, 255);
                 break;
             case Rarity.Rare:
-                card.GetComponent<Image>().color = new Color32(255,15,239, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(255,15,239, 255);
                 break;
             case Rarity.Epic:
-                card.GetComponent<Image>().color = new Color32(255,7,40, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(255,7,40, 255);
                 break;
             case Rarity.Legendary:
-                card.GetComponent<Image>().color = new Color32(255,189,7, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(255,189,7, 255);
                 break;
             default:
-                card.GetComponent<Image>().color = new Color32(255,255,255, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(255,255,255, 255);
                 break;
         }
     }
+    
+    public void updatePosition() {
+        card.transform.localPosition = new Vector3(UIConstants.PlayerHandCenterOffset + (card.positionInHand * UIConstants.PlayerHandCardSpacing), UIConstants.PlayerHandVerticalOffset, 0);
+    }
 
-    // public void displayText(){
-    //     nameText.text = " " + handList[0].name;
-    //     healthText.text = " " + handList[0].health;
-    //     attackText.text = " " + handList[0].attack;
-    //     manaText.text = " " + handList[0].manaCost;
-    // }
-
-
-
+    public void updateHover() {
+        if(card.currentlyHovered) {
+            card.transform.localScale = new Vector3(UIConstants.CardInHandHoveredSize, UIConstants.CardInHandHoveredSize, UIConstants.CardInHandHoveredSize);
+        }
+        else {
+            card.transform.localScale = new Vector3(UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize);
+        }
+    }
 
 }

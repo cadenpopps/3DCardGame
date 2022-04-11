@@ -1,31 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[System.Serializable]
 
 public class Deck : MonoBehaviour
 {
-	public static int DeckSize = 30;
+	public static int DeckSize = 10;
 	public List<Card> deck;
     public int deckSize;
+	
 
-
-    public GameObject stack;
-
+	public GameObject DeckObject;
+    public GameObject DeckPrefab;
+	public GameObject CardPrefab;
+	
     // Start is called before the first frame update
-    void Start()
-    {
-        stack = GameObject.Find("PlayerDeck/Cube");
-        stack.SetActive(true);
-        
-    } 
+    void Start() { } 
  
     // Update is called once per frame
     public void init()
     {
 		deck = new List<Card>();
 		for(int i = 0; i < DeckSize; i++){ 
-			// int x = (int) Random.Range(0,CardDatabase.CardDatabaseSize);
-			deck.Add(CardDatabase.generateRandomCard()); 
+			Card randomCard = CardDatabase.generateRandomCard(CardPrefab);
+			deck.Add(randomCard); 
+			randomCard.CardObject.transform.parent = DeckObject.transform;
+			randomCard.CardObject.transform.localPosition = new Vector3(0, 0, 0);
 			
 		} 
     }

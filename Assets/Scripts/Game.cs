@@ -9,6 +9,11 @@ public enum Turn {
     CPU
 };
 
+public enum Direction {
+    Left,
+    Right
+};
+
 public enum GameState {
     GameSetup,
     Running,
@@ -53,6 +58,12 @@ public class Game : MonoBehaviour
             if(this.turn == Turn.Player){
                    if(Input.GetKeyDown(KeyCode.Alpha1)){
                         player.playCard(1, board);
+                   }
+                   else if(Input.GetKeyDown(KeyCode.LeftArrow)){
+                        player.hoverCard(Direction.Left);
+                   }
+                   else if(Input.GetKeyDown(KeyCode.RightArrow)){
+                        player.hoverCard(Direction.Right);
                    }
                    else if(Input.GetKeyDown(KeyCode.Alpha2)){
                         player.playCard(2, board);

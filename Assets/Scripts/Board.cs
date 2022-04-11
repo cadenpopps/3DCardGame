@@ -14,8 +14,8 @@ public class Board : MonoBehaviour
 	private BoardSpace[,] spaces;
 	private GameObject[,] physicalSpaces;
 
-	public Sprite cardFace;
-	public SpriteRenderer sr;
+	// public Sprite cardFace;
+	// public SpriteRenderer sr;
 	public Texture2D tex;
 
 	void Awake() {
@@ -74,7 +74,7 @@ public class Board : MonoBehaviour
 		if(row < BoardHeight && column < BoardWidth && !spaces[row, column].occupied) {
 			spaces[row, column].cardReference = card;
 			spaces[row, column].occupied = true;
-			physicalSpaces[row, column].GetComponent<SpriteRenderer>().sprite = card.sprite;
+			// physicalSpaces[row, column].GetComponent<SpriteRenderer>().sprite = card.sprite;
 			return true;
 		}
 		else {

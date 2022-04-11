@@ -1,14 +1,20 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+[System.Serializable]
 
 public class Hand : MonoBehaviour
 {
     public static readonly int HandSize = 5;
     public static readonly int InitialHandSize = 5;
+	public GameObject CardPrefab;
 
-	public bool displaying = false;
 	public Card[] cards;
+	
+	public bool displaying = false;
+	public int currentlyHovered = 0;
+	
+	public GameObject HandObject;
 
 	public void init(Deck deck) {
 		cards = new Card[HandSize];
@@ -30,6 +36,8 @@ public class Hand : MonoBehaviour
 				}
 			}
 		}
+
+		// cards[currentlyFocused].CardDisplay
 	}
 	
 	public Card getCard(int cardNum) {
@@ -50,12 +58,25 @@ public class Hand : MonoBehaviour
 		}
 		return true;
 	}
+	
+	private bool isHandScrollable() {
+		int counter = 0;
+		for(int i = 0; i < HandSize; i++) {
+			if(cards[i] != null) {
+				counter++;
+			}
+		}
+		return counter >= 2;
+	}
 
 	private bool addCardToHand(Card card) {
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] == null) {
 				cards[i] = card;
-				cards[i].addHandPrefab(i);	
+				card.CardObject.transform.parent = HandObject.transform;
+				card.CardObject.transform.localPosition = Vector3.one;
+				card.CardObject.transform.localRotation = Quaternion.identity;
+				card.CardObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 				return true;
 			}
 		}
@@ -76,6 +97,59 @@ public class Hand : MonoBehaviour
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] != null) {
 				cards[i].disableHandPrefab();
+			}
+		}
+	}
+	
+    public void hoverCard(Direction d) {
+		int newHovered;
+		if(!isHandScrollable()) {
+			Debug.Log("Not enough cards in hand to scroll");
+			return;
+		}
+		else if(d == Direction.Left) {
+			cards[currentlyHovered].currentlyHovered = false;
+			newHovered = currentlyHovered - 1;
+			if(newHovered < 0) {
+				newHovered = HandSize;
+			}
+			while(cards[newHovered] == null) {
+				newHovered = currentlyHovered - 1;
+				if(newHovered < 0) {
+					newHovered = HandSize;
+				}
+			}
+			currentlyHovered = newHovered;
+			cards[currentlyHovered].currentlyHovered = true;
+		}
+		else if(d == Direction.Right) {
+			cards[currentlyHovered].currentlyHovered = false;
+			newHovered = currentlyHovered + 1;
+			if(newHovered >= HandSize) {
+				newHovered = 0;
+			}
+			while(cards[newHovered] == null) {
+				newHovered = currentlyHovered + 1;
+				if(newHovered >= HandSize) {
+					newHovered = 0;
+				}
+			}
+			currentlyHovered = newHovered;
+			cards[currentlyHovered].currentlyHovered = true;
+		}
+		else {
+			Debug.Log("Unrecognized direction");
+		}
+    }
+
+	void Update() {
+		if(displaying) {
+			for(int i = 0; i < HandSize; i++) {
+				if(cards[i] != null) {
+					cards[i].updatePosition(i);
+					cards[i].cardDisplay.updatePosition();
+					cards[i].cardDisplay.updateHover();
+				}
 			}
 		}
 	}
