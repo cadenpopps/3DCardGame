@@ -64,7 +64,7 @@ public class Game : MonoBehaviour
                    }
                    else if(Input.GetKeyDown(KeyCode.UpArrow)){
                         // Debug.Log("Test");
-                        if(player.hand.currentlySelected
+                        // if(player.hand.currentlySelected
                         player.selectCard();
                         // player.playCard(board);
                    }
