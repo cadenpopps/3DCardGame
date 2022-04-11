@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-	public static int DeckSize = 10;
+	public static int DeckSize = 30;
 	public List<Card> deck;
     public int deckSize;
 	
