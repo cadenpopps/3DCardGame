@@ -30,7 +30,7 @@ public class Hand : MonoBehaviour
 			}
 			else {
 				Card drawnCard = deck.drawTop();
-				if(addCardToHand(deck.drawTop())) {
+				if(addCardToHand(drawnCard)) {
 					Debug.Log("Added card " + drawnCard.name);
 				}
 				else {

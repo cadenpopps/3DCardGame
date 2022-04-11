@@ -39,6 +39,11 @@ public class CardDatabase : MonoBehaviour
 {
 
     public static List<Rarity> probabilityStruct = new List<Rarity>();
+    public static List<CardID> commons = new List<CardID>();
+    public static List<CardID> uncommons = new List<CardID>();
+    public static List<CardID> rares = new List<CardID>();
+    public static List<CardID> epics = new List<CardID>();
+    public static List<CardID> legendarys = new List<CardID>();
 
 
     public static Card generateCard(CardID cardId, GameObject CardPrefab) {
@@ -114,16 +119,16 @@ public class CardDatabase : MonoBehaviour
                 case int n when (i < 45):
                     probabilityStruct.Add(Rarity.Common);
                     break;
-                case int n when i < 68:
+                case int n when (i < 68):
                     probabilityStruct.Add(Rarity.Uncommon);
                     break;
-                case int n when i < 84:
+                case int n when (i < 84):
                     probabilityStruct.Add(Rarity.Rare);
                     break;
-                case int n when i < 99:
+                case int n when (i < 105):
                     probabilityStruct.Add(Rarity.Epic);
                     break;
-                case int n when i < 110:
+                case int n when (i < 110):
                     probabilityStruct.Add(Rarity.Legendary);
                     break;
                 default:
@@ -131,13 +136,29 @@ public class CardDatabase : MonoBehaviour
                     break;
             }
         }
+
+        commons.Add(CardID.DrMario);
+        commons.Add(CardID.LittleMac);
+        commons.Add(CardID.DonkeyKong);
+
+        uncommons.Add(CardID.MewTwo);
+        uncommons.Add(CardID.Kirby);
+        uncommons.Add(CardID.Ike);
+
+        rares.Add(CardID.Falco);
+        rares.Add(CardID.Jigglypuff);
+
+        epics.Add(CardID.Byleth);
+        epics.Add(CardID.ROB);
+
+        legendarys.Add(CardID.Joker);
     }
 
     public static Card generateRandomCard(GameObject CardPrefab) {
 
         
-        var rarityIndex = System.Enum.GetValues(typeof(CardID));
-        Rarity selectedRarity = probabilityStruct[Random.Range(1, rarityIndex.Length)];
+        // var rarityIndex = System.Enum.GetValues(typeof(CardID));
+        Rarity selectedRarity = probabilityStruct[Random.Range(0, probabilityStruct.Count)];
 
 
         // CardID selectedRarity = (CardID) cardIds.GetValue(Random.Range(1, cardIds.Length))
@@ -146,8 +167,26 @@ public class CardDatabase : MonoBehaviour
         // if(selectedRarity == Rarity.Common){
 
         // }
+        CardID cardIdSelected = CardID.Null;
+        if(selectedRarity == Rarity.Common){
+            cardIdSelected = ((CardID) commons[Random.Range(0, commons.Count)]);
+        }
+        else if(selectedRarity == Rarity.Uncommon){
+            cardIdSelected = ((CardID) uncommons[Random.Range(0, uncommons.Count)]);
+        }
+        else if(selectedRarity == Rarity.Rare){
+            cardIdSelected = ((CardID) rares[Random.Range(0, rares.Count)]);
+        }
+        else if(selectedRarity == Rarity.Epic){
+            cardIdSelected = ((CardID) epics[Random.Range(0, epics.Count)]);
+        }
+        else if(selectedRarity == Rarity.Legendary){
+            cardIdSelected = ((CardID) legendarys[Random.Range(0, legendarys.Count)]);
+        }
 
-        var cardIds = System.Enum.GetValues(typeof(CardID));
-        return generateCard((CardID) cardIds.GetValue(Random.Range(1, cardIds.Length)), CardPrefab);
+
+        // var cardIds = System.Enum.GetValues(typeof(CardID));
+        // return generateCard((CardID) cardIds.GetValue(Random.Range(1, cardIds.Length)), CardPrefab);
+        return generateCard(cardIdSelected, CardPrefab);
     }
 }

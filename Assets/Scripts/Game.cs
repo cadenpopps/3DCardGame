@@ -30,10 +30,10 @@ public class Game : MonoBehaviour
     GameState gameState = GameState.GameSetup;
 
 
-    void Start() {
+    void Awake() {
         // player = GameObject.Find("Player").gameObject.GetComponent<Player>();
         // cpu = GameObject.Find("CPU").gameObject.GetComponent<cpu>();
-        board = GameObject.Find("Board").gameObject.GetComponent<Board>();
+        CardDatabase.probInit();
         this.init();
     }
 
