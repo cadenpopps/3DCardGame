@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class BoardSpace : MonoBehaviour
 {
     public bool occupied;
-	public Card cardReference;
+	public Card card;
 	public GameObject boardSpaceObject;
 
 	public void init() {

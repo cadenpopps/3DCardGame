@@ -6,7 +6,8 @@ using System;
 
 public enum Turn {
     Player,
-    CPU
+    CPU,
+    Waiting
 };
 
 public enum Direction {
@@ -17,44 +18,62 @@ public enum Direction {
 public enum GameState {
     GameSetup,
     Running,
-    Paused
+    Paused,
+    GameOver
 };
 
 public class Game : MonoBehaviour
 {
 
     public Player player;
-    // CPU cpu;
+    public CPU cpu;
     public Board board;
     Turn turn;
     GameState gameState = GameState.GameSetup;
 
 
     void Awake() {
-        // player = GameObject.Find("Player").gameObject.GetComponent<Player>();
-        // cpu = GameObject.Find("CPU").gameObject.GetComponent<cpu>();
-        CardDatabase.probInit();
+        CardDatabase.init();
+        player.init();
+        cpu.init();
+        board.init();
         this.init();
     }
 
     void init() {
-        player.init();
-        // cpu.init();
-        board.init();
-
         turn = Turn.Player;
         gameState = GameState.Running;
-        this.run();
+        StartCoroutine(this.run());
     }
 
-    void run() {
+    IEnumerator run() {
+        while(gameState == GameState.Running) {
+            if(turn == Turn.Player) {
+                player.beginTurn(board);
+                turn = Turn.Waiting;
+                yield return new WaitForSeconds(3);
+            }
+            else if(turn == Turn.Waiting) {
+                yield return new WaitForSeconds(3);
+            }
+            else if (turn == Turn.CPU) {
+                cpu.beginTurn(board);
+                this.changeTurn();
+                yield return new WaitForSeconds(2);
+                board.runGameLogic(cpu, player);
+                this.runGameLogic();
+            }
+        }
+    }
 
-
-
+    void runGameLogic() {
+        if(player.health <= 0 || cpu.health <= 0) {
+            gameState = GameState.GameOver;
+        }
     }
 
     void changeTurn() {
-        if(turn == Turn.Player) {
+        if(turn == Turn.Player || turn == Turn.Waiting) {
             turn = Turn.CPU;
         }
         else if(turn == Turn.CPU) {
@@ -64,7 +83,7 @@ public class Game : MonoBehaviour
 
     void Update() {
         if(gameState == GameState.Running){
-            if(this.turn == Turn.Player){
+            if(this.turn == Turn.Player || this.turn == Turn.Waiting){
                 if(Input.GetKeyDown(KeyCode.LeftArrow)){
                     if(player.hand.displayingHand) {
                         if(player.hand.displayingSelected) {

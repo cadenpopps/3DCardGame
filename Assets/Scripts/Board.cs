@@ -32,7 +32,7 @@ public class Board : MonoBehaviour
     
     public bool addCard(Card card, BoardSpace selectedBoardSpace) {
 		if(!selectedBoardSpace.occupied) {
-			selectedBoardSpace.cardReference = card;
+			selectedBoardSpace.card = card;
 			selectedBoardSpace.occupied = true;
 			card.CardObject.transform.parent = selectedBoardSpace.boardSpaceObject.transform; 
             card.CardObject.transform.localScale = new Vector3(UIConstants.CardOnBoardSize, UIConstants.CardOnBoardSize, UIConstants.CardOnBoardSize);
@@ -55,10 +55,10 @@ public class Board : MonoBehaviour
 		return counter;
 	}
 	
-	public BoardSpace getFirstAvailableSpacePlayer() {
-		for(int col = 0; col < BoardWidth; col++) {
-			if(!spaces[0, col].occupied) {
-				return spaces[0, col];
+	public BoardSpace getFirstAvailableSpace(int row) {
+		for(int col = row; col < BoardWidth; col++) {
+			if(!spaces[row, col].occupied) {
+				return spaces[row, col];
 			}
 		}
 		return null;
@@ -72,7 +72,7 @@ public class Board : MonoBehaviour
 		}
 		return -1;
 	}
-	
+
 	public BoardSpace getFirstSpaceLeft(int row, BoardSpace s) {
 		int boardSpaceIndex = getIndexOfBoardSpace(row, s);
 		if(boardSpaceIndex == -1) {
@@ -113,6 +113,60 @@ public class Board : MonoBehaviour
 			return spaces[row, newIndex];
 		}
 		return null;
+	}
+
+	public void runGameLogic(CPU cpu, Player player) {
+		for(int column = 0; column < BoardWidth; column++) {
+			BoardSpace CPUBoardSpace = spaces[1, column];
+			BoardSpace PlayerBoardSpace = spaces[0, column];
+			if(!CPUBoardSpace.occupied && !PlayerBoardSpace.occupied) {
+				continue;
+			}
+			else if(!CPUBoardSpace.occupied) {
+				cpu.health -= PlayerBoardSpace.card.attack;
+			}
+			else if(!PlayerBoardSpace.occupied) {
+				player.health -= CPUBoardSpace.card.attack;
+			}
+			else {
+				int[] leftoverDamage = this.battleCards(CPUBoardSpace, PlayerBoardSpace);
+				player.health += leftoverDamage[0];
+				cpu.health += leftoverDamage[1];
+			}
+
+		}
+
+	}
+
+	private int[] battleCards(BoardSpace cpuSpace, BoardSpace playerSpace) {
+		Card cpuCard = cpuSpace.card;
+		Card playerCard = playerSpace.card;
+		int[] sum = {0, 0};
+		int cpuHealth = cpuCard.health;
+		int cpuAttack = cpuCard.attack;
+		int playerHealth = playerCard.health;
+		int playerAttack = playerCard.attack;
+		sum[0] = playerHealth - cpuAttack;
+		sum[1] = cpuHealth - playerAttack;
+		if(sum[0] > 0) {
+			playerCard.health = sum[0];
+		}
+		else {
+			this.destroy(playerSpace);
+		}
+		if(sum[1] > 0) {
+			cpuCard.health = sum[0];
+		}
+		else {
+			this.destroy(cpuSpace);
+		}
+		return sum;
+	}
+
+	private void destroy(BoardSpace space) {
+		space.occupied = false;
+        Destroy(space.card.cardDisplay.inHandPrefab);
+		space.card = null;
 	}
 
     void Update()

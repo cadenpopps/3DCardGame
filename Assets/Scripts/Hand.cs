@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Hand : MonoBehaviour
 {
     public static readonly int HandSize = 5;
-    public static readonly int InitialHandSize = 5;
+    public static readonly int InitialHandSize = 4;
 	public GameObject CardPrefab;
 
 	public Card[] cards;
@@ -23,6 +23,19 @@ public class Hand : MonoBehaviour
 		fillHandFromDeck(deck);
 	}
 
+	public void drawOne(Deck deck) {
+		for(int i = 0; i < HandSize; i++) {
+			if(cards[i] == null) {
+				Card drawnCard = deck.drawTop();
+				if(!addCardToHand(drawnCard)) {
+					Debug.Log("Couldn't add card");
+				}
+				return;
+			}
+		}
+		Debug.Log("Hand is full.");
+	}
+
 	private void fillHandFromDeck(Deck deck) {
 		for(int i = 0; i < InitialHandSize; i++) {
 			if(isHandFull()) {
@@ -30,10 +43,7 @@ public class Hand : MonoBehaviour
 			}
 			else {
 				Card drawnCard = deck.drawTop();
-				if(addCardToHand(drawnCard)) {
-					Debug.Log("Added card " + drawnCard.name);
-				}
-				else {
+				if(!addCardToHand(drawnCard)) {
 					Debug.Log("Couldn't add card");
 				}
 			}
@@ -97,15 +107,15 @@ public class Hand : MonoBehaviour
 	private void removeCardFromHand(int cardIndex) {
 		if(cards[cardIndex] != null) {
 			cards[cardIndex] = null;
-			for(int i = 0; i < HandSize; i++) {
-				if(cards[i] == null) {
-					for(int j = i; j < HandSize - 1; j++) {
-						cards[j] = cards[j + 1];
-					}
-					cards[HandSize - 1] = null;
-					break;
-				}
-			}
+			// for(int i = 0; i < HandSize; i++) {
+			// 	if(cards[i] == null) {
+			// 		for(int j = i; j < HandSize - 1; j++) {
+			// 			cards[j] = cards[j + 1];
+			// 		}
+			// 		cards[HandSize - 1] = null;
+			// 		break;
+			// 	}
+			// }
 		}
 	}
 
@@ -146,12 +156,12 @@ public class Hand : MonoBehaviour
 		this.resetHover();
 	}
 
-	public void selectCard(Board board) {
-		if(cards[currentlyHovered] != null && board.getFirstAvailableSpacePlayer() != null) {
+	public void selectCard(int row, Board board) {
+		if(cards[currentlyHovered] != null && board.getFirstAvailableSpace(row) != null) {
 			displayingSelected = true;
 			currentlySelected = currentlyHovered;
 			cards[currentlySelected].currentlySelected = true;
-			cards[currentlySelected].selectedBoardSpace = board.getFirstAvailableSpacePlayer();
+			cards[currentlySelected].selectedBoardSpace = board.getFirstAvailableSpace(row);
 		}
 	}
 	

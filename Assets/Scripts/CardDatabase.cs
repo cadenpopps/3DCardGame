@@ -113,7 +113,7 @@ public class CardDatabase : MonoBehaviour
         }
     }
     
-    public static void probInit(){
+    public static void init(){
         for(int i = 0; i < 110; i++){
             switch(i) {
                 case int n when (i < 45):
