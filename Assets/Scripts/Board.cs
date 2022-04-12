@@ -150,12 +150,14 @@ public class Board : MonoBehaviour
 		sum[1] = cpuHealth - playerAttack;
 		if(sum[0] > 0) {
 			playerCard.health = sum[0];
+			playerCard.cardDisplay.updateDisplay();
 		}
 		else {
 			this.destroy(playerSpace);
 		}
 		if(sum[1] > 0) {
-			cpuCard.health = sum[0];
+			cpuCard.health = sum[1];
+			cpuCard.cardDisplay.updateDisplay();
 		}
 		else {
 			this.destroy(cpuSpace);
