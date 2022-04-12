@@ -68,6 +68,7 @@ public class Game : MonoBehaviour
     void runGameLogic() {
         if(player.health <= 0 || cpu.health <= 0) {
             gameState = GameState.GameOver;
+            Debug.Log("--- Game Over ---");
         }
         this.changeTurn();
     }

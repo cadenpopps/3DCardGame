@@ -104,7 +104,7 @@ public class Hand : MonoBehaviour
 		}
 	}
 
-	private int getNumCardsInHand() {
+	public int getNumCardsInHand() {
 		int counter = 0;
 		for(int i = 0; i < HandSize;  i++) {
 			if(cards[i] != null) {
@@ -167,7 +167,7 @@ public class Hand : MonoBehaviour
 	}
 
 	public void selectCard(int row, Board board) {
-		if(cards[currentlyHovered] != null && board.getFirstAvailableSpace(row) != null) {
+		if(this.getNumCardsInHand() > 0 && cards[currentlyHovered] != null && board.getFirstAvailableSpace(row) != null) {
 			displayingSelected = true;
 			currentlySelected = currentlyHovered;
 			cards[currentlySelected].selectedBoardSpace = board.getFirstAvailableSpace(row);

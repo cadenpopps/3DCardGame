@@ -45,6 +45,16 @@ public class Board : MonoBehaviour
 		}
 	}
 
+	public int cardsOnRow(int row) {
+		int counter = 0;
+		for(int i = 0; i < BoardWidth; i++) {
+			if(spaces[row, i].occupied) {
+				counter++;
+			}
+		}
+		return counter;
+	}
+	
 	public int getOpenSpaces(int row) {
 		int counter = 0;
 		for(int i = 0; i < BoardWidth; i++) {

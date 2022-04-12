@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     }
     
     public void beginTurn(Board b) {
+        Debug.Log("--- Player turn ---");
         hand.drawOne(deck);
         hand.resetDisplay();
     }

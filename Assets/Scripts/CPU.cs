@@ -28,14 +28,16 @@ public class CPU : MonoBehaviour
         }
     }
     
-    public void beginTurn(Board b) {
-        Debug.Log("CPU Turn");
+    public void beginTurn(Board board) {
+        Debug.Log("--- CPU turn ---");
         hand.drawOne(deck);
         hand.resetDisplay();
         hand.display();
-        this.selectCard(b);
-        if(hand.currentlySelected > -1) {
-            this.playCard(b);
+        while(hand.getNumCardsInHand() > 1 && board.cardsOnRow(1) < board.cardsOnRow(0)) {
+            this.selectCard(board);
+            if(hand.currentlySelected > -1) {
+                this.playCard(board);
+            }
         }
         this.endTurn();
     }
