@@ -51,14 +51,13 @@ public class Game : MonoBehaviour
             if(turn == Turn.Player) {
                 player.beginTurn(board);
                 turn = Turn.Waiting;
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(2);
             }
             else if(turn == Turn.Waiting) {
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(2);
             }
             else if (turn == Turn.CPU) {
                 cpu.beginTurn(board);
-                this.changeTurn();
                 yield return new WaitForSeconds(2);
                 board.runGameLogic(cpu, player);
                 this.runGameLogic();
@@ -70,6 +69,7 @@ public class Game : MonoBehaviour
         if(player.health <= 0 || cpu.health <= 0) {
             gameState = GameState.GameOver;
         }
+        this.changeTurn();
     }
 
     void changeTurn() {

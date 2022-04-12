@@ -103,19 +103,29 @@ public class Hand : MonoBehaviour
 			Debug.Log("Card reference is null.");
 		}
 	}
+
+	private int getNumCardsInHand() {
+		int counter = 0;
+		for(int i = 0; i < HandSize;  i++) {
+			if(cards[i] != null) {
+				counter++;
+			}
+		}
+		return counter;
+	}
 	
 	private void removeCardFromHand(int cardIndex) {
 		if(cards[cardIndex] != null) {
 			cards[cardIndex] = null;
-			// for(int i = 0; i < HandSize; i++) {
-			// 	if(cards[i] == null) {
-			// 		for(int j = i; j < HandSize - 1; j++) {
-			// 			cards[j] = cards[j + 1];
-			// 		}
-			// 		cards[HandSize - 1] = null;
-			// 		break;
-			// 	}
-			// }
+			for(int i = cardIndex; i < HandSize - 1;  i++) {
+				if(cards[i + 1] != null) {
+					cards[i] = cards[i + 1];
+					cards[i + 1] = null;
+				}
+				else {
+					break;
+				}
+			}
 		}
 	}
 
@@ -160,7 +170,6 @@ public class Hand : MonoBehaviour
 		if(cards[currentlyHovered] != null && board.getFirstAvailableSpace(row) != null) {
 			displayingSelected = true;
 			currentlySelected = currentlyHovered;
-			cards[currentlySelected].currentlySelected = true;
 			cards[currentlySelected].selectedBoardSpace = board.getFirstAvailableSpace(row);
 		}
 	}
@@ -262,26 +271,30 @@ public class Hand : MonoBehaviour
 	}
 
 	public void resetHover() {
-		currentlyHovered = 0;
+		currentlyHovered = -1;
+		for(int i = 0; i < HandSize; i++) {
+			if(cards[i] != null) {
+				currentlyHovered = i;
+				break;
+			}
+		}
 		this.updateHover();
 	}
 
 	void Update() {
-		if(displayingSelected) {
+		if(displayingHand) {
+			int cardsInHand = this.getNumCardsInHand();
 			for(int i = 0; i < HandSize; i++) {
 				if(cards[i] != null) {
+					if(currentlyHovered == i) {
+						cards[i].currentlyHovered = true;
+					}
+					if(currentlySelected == i) {
+						cards[i].currentlySelected = true;
+						cards[i].currentlyHovered = false;
+					}
 					cards[i].updatePosition(i);
-					cards[i].cardDisplay.updatePosition();
-					cards[i].cardDisplay.updateSelected();
-				}
-			}
-		}
-		else if(displayingHand) {
-			for(int i = 0; i < HandSize; i++) {
-				if(cards[i] != null) {
-					cards[i].updatePosition(i);
-					cards[i].cardDisplay.updatePosition();
-					cards[i].cardDisplay.updateHover();
+					cards[i].updateDisplay(cardsInHand);
 				}
 			}
 		}

@@ -56,7 +56,7 @@ public class Board : MonoBehaviour
 	}
 	
 	public BoardSpace getFirstAvailableSpace(int row) {
-		for(int col = row; col < BoardWidth; col++) {
+		for(int col = 0; col < BoardWidth; col++) {
 			if(!spaces[row, col].occupied) {
 				return spaces[row, col];
 			}

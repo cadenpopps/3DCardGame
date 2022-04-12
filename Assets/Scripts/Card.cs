@@ -50,5 +50,9 @@ public class Card : MonoBehaviour
 	public void updatePosition(int pos) {
 		positionInHand = pos;
 	}
+	
+	public void updateDisplay(int totalCards) {
+		cardDisplay.updateDisplay(totalCards);
+	}
 
 }

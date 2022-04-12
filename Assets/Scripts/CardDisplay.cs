@@ -64,28 +64,28 @@ public class CardDisplay : MonoBehaviour
         }
     }
     
-    public void updatePosition() {
-        card.transform.localPosition = new Vector3(UIConstants.PlayerHandCenterOffset + (card.positionInHand * UIConstants.PlayerHandCardSpacing), UIConstants.PlayerHandVerticalOffset, 0);
+    public void updatePosition(int totalCards) {
+        int handWidth = (UIConstants.CardWidth * totalCards) + UIConstants.HandPadding;
+        int handLeftBorder = UIConstants.LeftBorder + ((UIConstants.FullHandWidth - handWidth) / 2);
+        float cardX = handLeftBorder + (card.positionInHand * (UIConstants.CardWidth + UIConstants.CardPadding)) + (UIConstants.CardPadding / 2);
+        card.transform.localPosition = new Vector3(cardX, UIConstants.PlayerHandVerticalOffset, 0);
     }
 
-    public void updateHover() {
-        if(card.currentlyHovered) {
-            card.transform.localScale = new Vector3(UIConstants.CardInHandHoveredSize, UIConstants.CardInHandHoveredSize, UIConstants.CardInHandHoveredSize);
-        }
-        else {
-            card.transform.localScale = new Vector3(UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize);
-        }
-    }
-
-    public void updateSelected() {
+    public void updateDisplay(int totalCards) {
         if(card.currentlySelected) {
+            this.updatePosition(totalCards);
             card.transform.parent = card.selectedBoardSpace.boardSpaceObject.transform;
             card.CardObject.transform.localScale = new Vector3(UIConstants.SelectedCardOnBoardSize, UIConstants.SelectedCardOnBoardSize, UIConstants.SelectedCardOnBoardSize);
             card.CardObject.transform.localPosition = new Vector3(0, 0, UIConstants.SelectedCardOnBoardZOffset);
             card.CardObject.transform.localRotation = Quaternion.identity;
         }
+        else if(card.currentlyHovered) {
+            this.updatePosition(totalCards);
+            card.transform.localScale = new Vector3(UIConstants.CardInHandHoveredSize, UIConstants.CardInHandHoveredSize, UIConstants.CardInHandHoveredSize);
+        }
         else {
-            card.transform.localPosition = new Vector3(UIConstants.PlayerHandCenterOffset + (card.positionInHand * UIConstants.PlayerHandCardSpacing), UIConstants.CardInHandNotSelectedOffset, 0);
+            card.transform.localScale = new Vector3(UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize, UIConstants.CardInHandDefaultSize);
+            this.updatePosition(totalCards);
         }
     }
 
