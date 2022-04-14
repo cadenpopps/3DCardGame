@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 [System.Serializable]
 
 public class CardDisplay : MonoBehaviour
 {
     
-	public Text nameText;
-	public Text healthText;
-	public Text attackText;
-	public Text manaText;
+	public TextMeshProUGUI nameText;
+	public TextMeshProUGUI healthText;
+	public TextMeshProUGUI attackText;
+	public TextMeshProUGUI manaText;
 	public GameObject inHandPrefab;
 	public GameObject onBoardPrefab;
 	public Card card;

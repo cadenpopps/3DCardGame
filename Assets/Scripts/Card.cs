@@ -22,14 +22,14 @@ public class Card : MonoBehaviour
 	public GameObject CardInHandObject;
 	public GameObject CardObject;
 
-	public void init(GameObject cardObject, CardID CardId, Rarity Rarity, string Name, int Health, int Attack, int ManaCost) {
+	public void init(GameObject cardObject, CardID CardId, CardConfig config) {
 		CardObject = cardObject;
 		id = CardId;
-		rarity = Rarity;
-		name = Name;
-		health = Health;
-		attack = Attack;
-		manaCost = ManaCost;
+		rarity = config.rarity;
+		name = config.name;
+		health = config.health;
+		attack = config.attack;
+		manaCost = config.manaCost;
 
 		currentlyHovered = false;
 		currentlySelected = false;
