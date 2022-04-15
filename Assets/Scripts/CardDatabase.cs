@@ -63,8 +63,7 @@ public class CardConfig {
 }
 
 
-public class CardDatabase : MonoBehaviour
-{
+public class CardDatabase : MonoBehaviour {
 
     public static int ProbabilityMax = 100;
     public static List<Rarity> Probability = new List<Rarity>();
@@ -161,6 +160,22 @@ public class CardDatabase : MonoBehaviour
                 case int n when (numTickets < 100):
                     Probability.Add(Rarity.Legendary);
                     break;
+                // EQUAL VALUES FOR TESTING
+                // case int n when (numTickets < 20):
+                //     Probability.Add(Rarity.Common);
+                //     break;
+                // case int n when (numTickets < 40):
+                //     Probability.Add(Rarity.Uncommon);
+                //     break;
+                // case int n when (numTickets < 60):
+                //     Probability.Add(Rarity.Rare);
+                //     break;
+                // case int n when (numTickets < 80):
+                //     Probability.Add(Rarity.Epic);
+                //     break;
+                // case int n when (numTickets < 100):
+                //     Probability.Add(Rarity.Legendary);
+                //     break;
                 default:
                     Probability.Add(Rarity.Null);
                     break;
@@ -168,79 +183,14 @@ public class CardDatabase : MonoBehaviour
         }
     }
 
-    public static Card generateCard(CardID cardId, GameObject CardPrefab)
-    {
+    public static Card generateCard(CardID cardId, GameObject CardPrefab) {
         GameObject cardGameObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
         Card card = cardGameObject.GetComponent<Card>() as Card;
         card.init(cardGameObject, cardId, CardConfigs[cardId]);
         return card;
-
-        // switch (cardId) {
-        //     case CardID.DrMario:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.DrMario, Rarity.Common, "Dr. Mario", 1, 2, 1);
-        //         return card;
-        //     case CardID.LittleMac:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.LittleMac, Rarity.Common, "Little Mac", 1, 1, 1);
-        //         return card;
-        //     case CardID.DonkeyKong:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.DonkeyKong, Rarity.Common, "Donkey Kong", 2, 1, 1);
-        //         return card;
-        //     case CardID.MewTwo:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.MewTwo, Rarity.Uncommon, "MewTwo", 1, 3, 2);
-        //         return card;
-        //     case CardID.Kirby:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.Kirby, Rarity.Uncommon, "Kirby", 2, 2, 2);
-        //         return card;
-        //     case CardID.Ike:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.Ike, Rarity.Uncommon, "Ike", 3, 2, 2);
-        //         return card;
-        //     case CardID.Falco:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.Falco, Rarity.Rare, "Falco", 2, 3, 3);
-        //         return card;
-        //     case CardID.Jigglypuff:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.Jigglypuff, Rarity.Rare, "Jigglypuff", 2, 4, 3);
-        //         return card;
-        //     case CardID.Byleth:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.Byleth, Rarity.Epic, "Byleth", 3, 4, 4);
-        //         return card;
-        //     case CardID.ROB:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.ROB, Rarity.Epic, "R.O.B", 4, 3, 4);
-        //         return card;
-        //     case CardID.Joker:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.Joker, Rarity.Legendary, "Joker", 5, 4, 5);
-        //         return card;
-        //     default:
-        //         cardObject = Instantiate(CardPrefab, Vector3.one, Quaternion.identity);
-        //         card = cardObject.GetComponent<Card>() as Card;
-        //         card.init(cardObject, CardID.Null, Rarity.Null, "Null", 0, 0, 0);
-        //         return card;
-        // }
     }
 
     public static Card generateRandomCard(GameObject CardPrefab) {
-
         Rarity selectedRarity = Probability[Random.Range(0, ProbabilityMax)];
         CardID cardIdSelected = CardID.Null;
 
