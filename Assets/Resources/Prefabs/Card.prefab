@@ -28,7 +28,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 624926665891445555}
+  - {fileID: 941534137565043684}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,10 +50,14 @@ MonoBehaviour:
   health: 0
   attack: 0
   manaCost: 0
+  positionInHand: 0
+  currentlyHovered: 0
+  currentlySelected: 0
+  selectedBoardSpace: {fileID: 0}
   cardDisplay: {fileID: 0}
-  CardInHandObject: {fileID: 624926665891445554}
-  CardObject: {fileID: 0}
---- !u!1001 &7506917263092976402
+  CardInHandObject: {fileID: 941534137565043685}
+  CardObject: {fileID: 3301209780322998048}
+--- !u!1001 &7895023764070509509
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -62,7 +66,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6954052638778814496, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
       propertyPath: m_Name
-      value: CardInHand
+      value: CardDisplay
       objectReference: {fileID: 0}
     - target: {fileID: 6954052638778814497, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
       propertyPath: m_Pivot.x
@@ -130,11 +134,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6954052638778814497, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -350
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6954052638778814497, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -115
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6954052638778814497, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -148,19 +152,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6954052638778814508, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
-      propertyPath: card
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
---- !u!1 &624926665891445554 stripped
+--- !u!1 &941534137565043685 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6954052638778814496, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
-  m_PrefabInstance: {fileID: 7506917263092976402}
+  m_PrefabInstance: {fileID: 7895023764070509509}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &624926665891445555 stripped
+--- !u!224 &941534137565043684 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6954052638778814497, guid: 428e02776e6dae041a566f39d6a2f24e, type: 3}
-  m_PrefabInstance: {fileID: 7506917263092976402}
+  m_PrefabInstance: {fileID: 7895023764070509509}
   m_PrefabAsset: {fileID: 0}

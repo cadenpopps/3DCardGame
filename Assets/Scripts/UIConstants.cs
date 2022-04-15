@@ -19,7 +19,7 @@ public class UIConstants : MonoBehaviour
 
     public static int LeftBorder = -340;
     public static int CardWidth = 120;
-    public static int CardPadding = 20;
+    public static int CardPadding = 15;
     public static int HandPadding = 80;
     public static int FullHandWidth = 700 + HandPadding;
 
