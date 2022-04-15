@@ -16,7 +16,7 @@ public enum Direction {
 };
 
 public enum GameState {
-    GameSetup,
+    TitleScreen,
     Running,
     Paused,
     GameOver
@@ -28,19 +28,32 @@ public class Game : MonoBehaviour
     public Player player;
     public CPU cpu;
     public Board board;
+
+    public GameObject playerObject;
+    public GameObject cpuObject;
+    public GameObject boardObject;
+
+
     Turn turn;
-    GameState gameState = GameState.GameSetup;
+    GameState gameState = GameState.TitleScreen;
 
 
     void Awake() {
         CardDatabase.init();
-        player.init();
-        cpu.init();
-        board.init();
         this.init();
     }
 
     void init() {
+        boardObject.SetActive(false);
+        playerObject.SetActive(false);
+    }
+
+    void newGame() {
+        boardObject.SetActive(true);
+        playerObject.SetActive(true);
+        player.init();
+        cpu.init();
+        board.init();
         turn = Turn.Player;
         gameState = GameState.Running;
         StartCoroutine(this.run());
@@ -83,9 +96,14 @@ public class Game : MonoBehaviour
     }
 
     void Update() {
+        if(gameState == GameState.TitleScreen || gameState == GameState.GameOver) {
+            if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.N)){
+                this.newGame();
+            }
+        }
         if(gameState == GameState.Running){
             if(this.turn == Turn.Player || this.turn == Turn.Waiting){
-                if(Input.GetKeyDown(KeyCode.LeftArrow)){
+                if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) {
                     if(player.hand.displayingHand) {
                         if(player.hand.displayingSelected) {
                             player.moveSelected(Direction.Left, board);
@@ -95,7 +113,7 @@ public class Game : MonoBehaviour
                         }
                     }
                 }
-                else if(Input.GetKeyDown(KeyCode.RightArrow)){
+                else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) {
                     if(player.hand.displayingHand) {
                         if(player.hand.displayingSelected) {
                             player.moveSelected(Direction.Right, board);
@@ -105,7 +123,7 @@ public class Game : MonoBehaviour
                         }
                     }
                 }
-                else if(Input.GetKeyDown(KeyCode.UpArrow)){
+                else if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
                     if(player.hand.displayingHand) {
                         if(player.hand.displayingSelected) {
                             player.playCard(board);
@@ -115,7 +133,7 @@ public class Game : MonoBehaviour
                         }
                     }
                 }
-                else if(Input.GetKeyDown(KeyCode.DownArrow)){
+                else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) {
                     if(player.hand.displayingHand) {
                         player.deselectCard();
                     }
@@ -123,7 +141,7 @@ public class Game : MonoBehaviour
                 else if(Input.GetKeyDown(KeyCode.Q)){
                     player.toggleDisplayHand();
                 }
-                else if(Input.GetKeyDown(KeyCode.Return)){
+                else if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.E)) {
                     player.endTurn();
                     this.changeTurn();
                 }
