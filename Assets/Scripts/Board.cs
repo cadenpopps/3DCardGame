@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-
+[System.Serializable]
 
 public class Board : MonoBehaviour
 {
@@ -13,7 +12,8 @@ public class Board : MonoBehaviour
 
 	public BoardSpace[,] spaces;
 
-	public Texture2D tex;
+	public GameObject BoardObject;
+
 
 	void Awake() { }
 
@@ -29,6 +29,24 @@ public class Board : MonoBehaviour
 			}
 		} 
     }
+
+	public void reset() {
+        spaces = new BoardSpace[BoardHeight, BoardWidth];
+		for(int row = 0; row < BoardHeight; row++) {
+			for(int col = 0; col < BoardWidth; col++) {
+				spaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString()).GetComponent<BoardSpace>() as BoardSpace;
+			}
+		} 
+		Card[] cardObjects = BoardObject.GetComponentsInChildren<Card>();
+		for(int i = 0; i < cardObjects.Length; i++) {
+			cardObjects[i].CardObject.transform.parent = null;
+			Destroy(cardObjects[i].CardObject);
+		}
+		for(int col = 0; col < BoardWidth; col++) {
+			spaces[0, col].reset();
+			spaces[1, col].reset();
+		}
+	}
     
     public bool addCard(Card card, BoardSpace selectedBoardSpace) {
 		if(!selectedBoardSpace.occupied) {

@@ -11,28 +11,37 @@ public class Player : MonoBehaviour
     public int health;
     public int mana;
 
-
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI manaText;
 
-
-
     public void init(){
         health = 30;
-        mana = 10;
+        mana = 3;
         deck.init();
         hand.init(deck); 
+        this.resetUI();
         this.updateUI();
     }
 
-	public void updateUI() {
-        healthText.text = health.ToString();
-        manaText.text = mana.ToString();
+    public void reset() {
+        deck.reset();
+        hand.reset();
     }
 
-
-    public void playCard(Board board) {
-        hand.playCard(board);
+	public void updateUI() {
+        manaText.color = Color.white;
+        manaText.text = mana.ToString();
+        healthText.text = health.ToString();
+        if(health < 10) {
+            healthText.color = Color.red;
+        }
+    }
+    
+	public void resetUI() {
+        manaText.color = Color.white;
+        healthText.color = Color.white;
+        manaText.text = mana.ToString();
+        healthText.text = health.ToString();
     }
 
     public void toggleDisplayHand() {
@@ -69,5 +78,33 @@ public class Player : MonoBehaviour
     public void deselectCard() {
         hand.deselectCard();
     }
+    
+    public bool playCard(Board board) {
+        if(mana >= hand.cards[hand.currentlySelected].manaCost) {
+            mana -= hand.cards[hand.currentlySelected].manaCost;
+            hand.playCard(board);
+            this.updateUI();
+            return true;
+        }
+        else {
+            Debug.Log("Not enough mana to play this card!");
+            manaText.color = Color.red;
+            return false;
+        }
+    }
+
+    public void drawCard() {
+        // if(mana >= GameConfig.DrawCardManaCost) {
+        if(mana < 3) {
+            Debug.Log("Not enough mana to draw a card!");
+            manaText.color = Color.red;
+        }
+        else if(mana >= 3 && !hand.isHandFull()) {
+            mana -= 3;
+            // mana -= GameConfig.DrawCardManaCost;
+            hand.drawOne(deck);
+        }
+    }
+
 
 }

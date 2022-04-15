@@ -11,16 +11,28 @@ public class Hand : MonoBehaviour
 
 	public Card[] cards;
 	
-	public bool displayingHand = false;
-	public bool displayingSelected = false;
-	public int currentlyHovered = 0;
-	public int currentlySelected = -1;
+	public bool displayingHand;
+	public bool displayingSelected;
+	public int currentlyHovered;
+	public int currentlySelected;
 	
 	public GameObject HandObject;
 
 	public void init(Deck deck) {
+		displayingHand = false;
+		displayingSelected = false;
+		currentlyHovered = 0;
+		currentlySelected = -1;
 		cards = new Card[HandSize];
 		fillHandFromDeck(deck);
+	}
+
+	public void reset() {
+		Card[] cardObjects = HandObject.GetComponentsInChildren<Card>();
+		for(int i = 0; i < cardObjects.Length; i++) {
+			cardObjects[i].CardObject.transform.parent = null;
+			Destroy(cardObjects[i].CardObject);
+		}
 	}
 
 	public void drawOne(Deck deck) {
@@ -30,6 +42,7 @@ public class Hand : MonoBehaviour
 				if(!addCardToHand(drawnCard)) {
 					Debug.Log("Couldn't add card");
 				}
+				drawnCard.enableHandPrefab();
 				return;
 			}
 		}
@@ -62,7 +75,7 @@ public class Hand : MonoBehaviour
 		}
 	}
 
-	private bool isHandFull() {
+	public bool isHandFull() {
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] == null) {
 				return false;

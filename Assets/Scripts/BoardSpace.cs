@@ -12,4 +12,9 @@ public class BoardSpace : MonoBehaviour
 	public void init() {
 		occupied = false;
 	}
+	
+	public void reset() {
+		occupied = false;
+		card = null;
+	}
 }
