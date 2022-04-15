@@ -46,6 +46,8 @@ public class Game : MonoBehaviour
     void init() {
         boardObject.SetActive(false);
         playerObject.SetActive(false);
+        this.newGame();
+        cpuObject.SetActive(true);
     }
 
     void newGame() {

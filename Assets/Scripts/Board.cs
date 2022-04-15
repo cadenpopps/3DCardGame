@@ -146,8 +146,8 @@ public class Board : MonoBehaviour
 
 		}
 
-		player.updateHealthUI();
-		cpu.updateHealthUI();
+		player.updateUI();
+		cpu.updateUI();
 
 	}
 

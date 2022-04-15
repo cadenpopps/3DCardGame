@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine;
+using TMPro;
 
 public class CPU : MonoBehaviour
 {
@@ -8,18 +10,26 @@ public class CPU : MonoBehaviour
     public Deck deck;
     public Hand hand;
     public int health;
+    public int mana;
 
-    public HealthDisplay healthUI;
+
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI manaText;
+
 
 
     public void init(){
         health = 30;
+        mana = 10;
         deck.init();
         hand.init(deck); 
+        this.updateUI();
+
     }
 
-    public void updateHealthUI(){
-        healthUI.updateHealth(this.health);
+	public void updateUI() {
+        healthText.text = health.ToString();
+        manaText.text = mana.ToString();
     }
 
     public void playCard(Board board) {
