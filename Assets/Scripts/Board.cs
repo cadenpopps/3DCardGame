@@ -160,6 +160,7 @@ public class Board : MonoBehaviour
 		sum[1] = cpuHealth - playerAttack;
 		if(sum[0] > 0) {
 			playerCard.health = sum[0];
+			sum[0] = 0;
 			playerCard.cardDisplay.updateDisplay();
 		}
 		else {
@@ -167,6 +168,7 @@ public class Board : MonoBehaviour
 		}
 		if(sum[1] > 0) {
 			cpuCard.health = sum[1];
+			sum[1] = 0;
 			cpuCard.cardDisplay.updateDisplay();
 		}
 		else {
