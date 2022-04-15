@@ -45,19 +45,19 @@ public class CardDisplay : MonoBehaviour
     public void updateRarity() {
         switch(card.rarity) {
             case Rarity.Common:
-                inHandPrefab.GetComponent<Image>().color = new Color32(0,208,255, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(180,240,255, 255);
                 break;
             case Rarity.Uncommon:
-                inHandPrefab.GetComponent<Image>().color = new Color32(115,15,255, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(110,170,255, 255);
                 break;
             case Rarity.Rare:
-                inHandPrefab.GetComponent<Image>().color = new Color32(255,15,239, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(240,86,255, 255);
                 break;
             case Rarity.Epic:
-                inHandPrefab.GetComponent<Image>().color = new Color32(255,7,40, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(244,32,17, 255);
                 break;
             case Rarity.Legendary:
-                inHandPrefab.GetComponent<Image>().color = new Color32(255,189,7, 255);
+                inHandPrefab.GetComponent<Image>().color = new Color32(255,187,30, 255);
                 break;
             default:
                 inHandPrefab.GetComponent<Image>().color = new Color32(255,255,255, 255);
@@ -89,5 +89,4 @@ public class CardDisplay : MonoBehaviour
             this.updatePosition(totalCards);
         }
     }
-
 }
