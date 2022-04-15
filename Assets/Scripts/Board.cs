@@ -146,6 +146,9 @@ public class Board : MonoBehaviour
 
 		}
 
+		player.updateHealthUI();
+		cpu.updateHealthUI();
+
 	}
 
 	private int[] battleCards(BoardSpace cpuSpace, BoardSpace playerSpace) {

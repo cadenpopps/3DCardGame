@@ -9,10 +9,16 @@ public class Player : MonoBehaviour
     public Hand hand;
     public int health;
 
+    public HealthDisplay healthUI;
+
     public void init(){
         health = 30;
         deck.init();
         hand.init(deck); 
+    }
+
+    public void updateHealthUI(){
+        healthUI.updateHealth(this.health);
     }
 
     public void playCard(Board board) {
