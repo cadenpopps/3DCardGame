@@ -11,6 +11,7 @@ public class Card : MonoBehaviour
 	public int health;
 	public int attack;
 	public int manaCost;
+    public Texture2D texture;
 	
 	public int positionInHand;
 	public bool currentlyHovered;
@@ -30,6 +31,7 @@ public class Card : MonoBehaviour
 		health = config.health;
 		attack = config.attack;
 		manaCost = config.manaCost;
+        texture = config.texture;
 
 		currentlyHovered = false;
 		currentlySelected = false;
@@ -40,12 +42,12 @@ public class Card : MonoBehaviour
 	}
 	
 	public void enableHandPrefab() {
-		cardDisplay.inHandPrefab.SetActive(true); 
-	}
+        cardDisplay.CardPrefab.SetActive(true);
+    }
 	
 	public void disableHandPrefab() {
-		cardDisplay.inHandPrefab.SetActive(false); 
-	}
+        cardDisplay.CardPrefab.SetActive(false);
+    }
 
 	public void updatePosition(int pos) {
 		positionInHand = pos;

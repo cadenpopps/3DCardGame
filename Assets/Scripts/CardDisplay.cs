@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 [System.Serializable]
 
 public class CardDisplay : MonoBehaviour
@@ -12,8 +12,8 @@ public class CardDisplay : MonoBehaviour
 	public TextMeshProUGUI healthText;
 	public TextMeshProUGUI attackText;
 	public TextMeshProUGUI manaText;
-	public GameObject inHandPrefab;
-	public GameObject onBoardPrefab;
+    public GameObject CardPrefab;
+    public GameObject CardPrefabImage;
 	public Card card;
 
     public void init(Card c) {
@@ -23,44 +23,41 @@ public class CardDisplay : MonoBehaviour
     
 	public void addHandPrefab() {
 		this.updateDisplay();
-		inHandPrefab.transform.SetParent(card.CardObject.transform);
-        inHandPrefab.transform.localPosition = Vector3.zero;
-		inHandPrefab.SetActive(false); 
-	}
-
-	private Sprite generateSprite(string PathToTexture) {
-		Texture2D tex = Resources.Load<Texture2D>(PathToTexture);
-		Sprite temp = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 800);
-		return temp;
-	}
+        this.updateRarity();
+        Sprite temp = Sprite.Create(card.texture, new Rect(0, 0, card.texture.width, card.texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+        CardPrefabImage.GetComponent<Image>().sprite = temp;
+        CardPrefab.transform.SetParent(card.CardObject.transform);
+        CardPrefab.transform.SetParent(card.CardObject.transform);
+        CardPrefab.transform.localPosition = Vector3.zero;
+        CardPrefab.SetActive(false);
+    }
 
     public void updateDisplay() {
         nameText.text = card.name.ToString();
         healthText.text = card.health.ToString();
         attackText.text = card.attack.ToString();
         manaText.text = card.manaCost.ToString();
-        this.updateRarity();
     }
 
     public void updateRarity() {
         switch(card.rarity) {
             case Rarity.Common:
-                inHandPrefab.GetComponent<Image>().color = new Color32(180,240,255, 255);
+                CardPrefab.GetComponent<Image>().color = new Color32(180, 240, 255, 255);
                 break;
             case Rarity.Uncommon:
-                inHandPrefab.GetComponent<Image>().color = new Color32(110,170,255, 255);
+                CardPrefab.GetComponent<Image>().color = new Color32(110, 170, 255, 255);
                 break;
             case Rarity.Rare:
-                inHandPrefab.GetComponent<Image>().color = new Color32(240,86,255, 255);
+                CardPrefab.GetComponent<Image>().color = new Color32(240, 86, 255, 255);
                 break;
             case Rarity.Epic:
-                inHandPrefab.GetComponent<Image>().color = new Color32(244,32,17, 255);
+                CardPrefab.GetComponent<Image>().color = new Color32(244, 32, 17, 255);
                 break;
             case Rarity.Legendary:
-                inHandPrefab.GetComponent<Image>().color = new Color32(255,187,30, 255);
+                CardPrefab.GetComponent<Image>().color = new Color32(255, 187, 30, 255);
                 break;
             default:
-                inHandPrefab.GetComponent<Image>().color = new Color32(255,255,255, 255);
+                CardPrefab.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
                 break;
         }
     }
