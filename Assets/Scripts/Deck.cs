@@ -5,24 +5,18 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour {
 
-	public static int DeckSize = 30;
-	public List<Card> deck;
+	public Card[] deck;
 	public GameObject DeckObject;
     public GameObject DeckPrefab;
 	public GameObject CardPrefab;
-	
+
     public void init() {
-		deck = new List<Card>();
-		for(int i = 0; i < DeckSize; i++){ 
-			Card randomCard = CardDatabase.generateRandomCard(CardPrefab);
-			deck.Add(randomCard); 
-			randomCard.CardObject.transform.parent = DeckObject.transform;
-			randomCard.CardObject.transform.localPosition = new Vector3(0, 0, 0);
-			
-		} 
+		this.reset();
+		this.fillDeck();
     }
 
 	public void reset() {
+		this.deck = new Card[Config.DeckSize];
 		Card[] cardObjects = DeckObject.GetComponentsInChildren<Card>();
 		for(int i = 0; i < cardObjects.Length; i++) {
 			cardObjects[i].CardObject.transform.parent = null;
@@ -30,9 +24,24 @@ public class Deck : MonoBehaviour {
 		}
 	}
 
-	public Card drawTop() {
-		Card temp = deck[0];
-		deck.RemoveAt(0);
-		return temp;
+	public void fillDeck() {
+		for(int i = 0; i < Config.DeckSize; i++){
+			Card newCard = CardDatabase.generateRandomCard(CardPrefab);
+			newCard.CardObject.transform.parent = DeckObject.transform;
+			newCard.CardObject.transform.localPosition = new Vector3(0, 0, 0);
+			deck[i] = newCard;
+		}
+	}
+
+	public Card draw() {
+		for(int i = 0; i < DeckSize; i++) {
+			if(deck[i] != null) {
+				Card drawCard = deck[i];
+				deck[i] = null;
+				return drawCard;
+			}
+		}
+		Debug.Log("Deck out of cards, unable to draw.");
+		return null;
 	}
 }

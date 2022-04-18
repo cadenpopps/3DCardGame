@@ -10,24 +10,26 @@ public class Hand : MonoBehaviour
 	public GameObject CardPrefab;
 
 	public Card[] cards;
-	
+
 	public bool displayingHand;
 	public bool displayingSelected;
 	public int currentlyHovered;
 	public int currentlySelected;
-	
+
 	public GameObject HandObject;
 
 	public void init(Deck deck) {
+		this.reset();
+		this.fillHand(deck);
+		this.resetDisplay();
+	}
+
+	public void reset() {
 		displayingHand = false;
 		displayingSelected = false;
 		currentlyHovered = 0;
 		currentlySelected = -1;
 		cards = new Card[HandSize];
-		fillHandFromDeck(deck);
-	}
-
-	public void reset() {
 		Card[] cardObjects = HandObject.GetComponentsInChildren<Card>();
 		for(int i = 0; i < cardObjects.Length; i++) {
 			cardObjects[i].CardObject.transform.parent = null;
@@ -49,22 +51,17 @@ public class Hand : MonoBehaviour
 		Debug.Log("Hand is full.");
 	}
 
-	private void fillHandFromDeck(Deck deck) {
+	private void fillHand(Deck deck) {
 		for(int i = 0; i < InitialHandSize; i++) {
-			if(isHandFull()) {
-				return;
-			}
-			else {
+			if(!isHandFull()) {
 				Card drawnCard = deck.drawTop();
 				if(!addCardToHand(drawnCard)) {
-					Debug.Log("Couldn't add card");
+					Debug.Log("Couldn't add card " + drawnCard.name + " to hand.");
 				}
 			}
 		}
-
-		cards[currentlyHovered].currentlyHovered = true;
 	}
-	
+
 	public Card getCard(int cardNum) {
 		try {
 			return cards[cardNum];
@@ -83,7 +80,7 @@ public class Hand : MonoBehaviour
 		}
 		return true;
 	}
-	
+
 	private bool isHandScrollable() {
 		int counter = 0;
 		for(int i = 0; i < HandSize; i++) {
@@ -105,7 +102,7 @@ public class Hand : MonoBehaviour
 		return false;
 	}
 
-	private void setCardTransformToHand(Card card) { 
+	private void setCardTransformToHand(Card card) {
 		if(card != null) {
 			card.CardObject.transform.parent = HandObject.transform;
 			card.CardObject.transform.localPosition = Vector3.zero;
@@ -126,7 +123,7 @@ public class Hand : MonoBehaviour
 		}
 		return counter;
 	}
-	
+
 	private void removeCardFromHand(int cardIndex) {
 		if(cards[cardIndex] != null) {
 			cards[cardIndex] = null;
@@ -186,7 +183,7 @@ public class Hand : MonoBehaviour
 			cards[currentlySelected].selectedBoardSpace = board.getFirstAvailableSpace(row);
 		}
 	}
-	
+
 	public void deselectCard() {
 		if(currentlySelected != -1) {
 			if(cards[currentlySelected] != null) {
@@ -231,7 +228,7 @@ public class Hand : MonoBehaviour
 			Debug.Log("Unrecognized direction");
 		}
 	}
-	
+
     public void hoverCard(Direction d) {
 		int newHovered;
 		if(!isHandScrollable()) {
@@ -274,12 +271,12 @@ public class Hand : MonoBehaviour
 
 	public void updateHover() {
 		for(int i = 0; i < HandSize; i++) {
-			if(i == currentlyHovered && cards[i] != null) {
-				cards[i].currentlyHovered = true;
-			}
-			else if(cards[i] != null) {
+			if(cards[i] != null) {
 				cards[i].currentlyHovered = false;
 			}
+		}
+		if(currentlyHovered >= 0 && currentlyHovered < Config.HandSize && cards[currentlyHovered] != null) {
+			cards[currentlyHovered].currentlyHovered = true;
 		}
 	}
 
@@ -288,7 +285,8 @@ public class Hand : MonoBehaviour
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] != null) {
 				currentlyHovered = i;
-				break;
+				this.updateHover();
+				return;
 			}
 		}
 		this.updateHover();
