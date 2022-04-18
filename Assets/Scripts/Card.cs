@@ -11,6 +11,8 @@ public class Card : MonoBehaviour
 	public int health;
 	public int attack;
 	public int manaCost;
+    public Passive passive;
+    public string passiveText;
     public Texture2D texture;
 	
 	public int positionInHand;
@@ -24,14 +26,16 @@ public class Card : MonoBehaviour
 	public GameObject CardObject;
 
 	public void init(GameObject cardObject, CardID CardId, CardConfig config) {
-		CardObject = cardObject;
-		id = CardId;
-		rarity = config.rarity;
-		name = config.name;
-		health = config.health;
-		attack = config.attack;
-		manaCost = config.manaCost;
-        texture = config.texture;
+        this.CardObject = cardObject;
+        this.id = CardId;
+        this.rarity = config.rarity;
+        this.name = config.name;
+        this.health = config.health;
+        this.attack = config.attack;
+        this.manaCost = config.manaCost;
+        this.texture = config.texture;
+        this.passive = config.passive;
+        this.passiveText = CardDatabase.PassiveDescriptions[this.passive];
 
 		currentlyHovered = false;
 		currentlySelected = false;

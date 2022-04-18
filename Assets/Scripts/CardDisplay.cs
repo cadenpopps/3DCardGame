@@ -12,6 +12,7 @@ public class CardDisplay : MonoBehaviour
 	public TextMeshProUGUI healthText;
 	public TextMeshProUGUI attackText;
 	public TextMeshProUGUI manaText;
+    public TextMeshProUGUI descriptionText;
     public GameObject CardPrefab;
     public GameObject CardPrefabImage;
 	public Card card;
@@ -37,6 +38,7 @@ public class CardDisplay : MonoBehaviour
         healthText.text = card.health.ToString();
         attackText.text = card.attack.ToString();
         manaText.text = card.manaCost.ToString();
+        descriptionText.text = card.passiveText;
     }
 
     public void updateRarity() {

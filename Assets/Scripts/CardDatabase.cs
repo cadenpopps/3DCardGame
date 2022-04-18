@@ -51,6 +51,19 @@ public enum Rarity
     Legendary
 };
 
+public enum Passive
+{
+    Null,
+    Straight,
+    Area,
+    Piercing,
+    InstaKill,
+    Regen,
+    Fast,
+    Double,
+    Dodge
+}
+
 public class CardConfig
 {
     public Rarity rarity;
@@ -58,14 +71,16 @@ public class CardConfig
     public int health;
     public int attack;
     public int manaCost;
+    public Passive passive;
     public Texture2D texture;
-    public CardConfig(Rarity rarity, string name, int health, int attack, int manaCost)
+    public CardConfig(Rarity rarity, string name, int health, int attack, int manaCost, Passive passive)
     {
         this.rarity = rarity;
         this.name = name;
         this.health = health;
         this.attack = attack;
         this.manaCost = manaCost;
+        this.passive = passive;
     }
 }
 
@@ -124,36 +139,47 @@ public class CardDatabase : MonoBehaviour
     };
 
     public static readonly Dictionary<CardID, CardConfig> CardConfigs = new Dictionary<CardID, CardConfig> {
-        {CardID.DrMario, new CardConfig(Rarity.Common, "Dr. Mario", 1, 1, 1)},
-        {CardID.LittleMac, new CardConfig(Rarity.Common, "Little Mac", 1, 1, 1)},
-        {CardID.DonkeyKong, new CardConfig(Rarity.Common, "Donkey Kong", 2, 1, 1)},
-        {CardID.Steve, new CardConfig(Rarity.Common, "Steve", 1, 1, 1)},
-        {CardID.Link, new CardConfig(Rarity.Common, "Link", 1, 1, 1)},
-        {CardID.Fox, new CardConfig(Rarity.Common, "Fox", 2, 1, 1)},
-        {CardID.CaptainFalcon, new CardConfig(Rarity.Common, "Captain Falcon", 1, 1, 1)},
-        {CardID.Peach, new CardConfig(Rarity.Common, "Peach", 1, 1, 1)},
-        {CardID.Roy, new CardConfig(Rarity.Common, "Roy", 2, 1, 1)},
-        {CardID.Kirby, new CardConfig(Rarity.Common, "Kirby", 2, 2, 2)},
-        {CardID.Yoshi, new CardConfig(Rarity.Common, "Yoshi", 1, 1, 1)},
-        {CardID.Luigi, new CardConfig(Rarity.Common, "Luigi", 1, 1, 1)},
-        {CardID.MewTwo, new CardConfig(Rarity.Uncommon, "MewTwo", 1, 3, 2)},
-        {CardID.Pikachu, new CardConfig(Rarity.Uncommon, "Pikachu", 1, 1, 1)},
-        {CardID.Ike, new CardConfig(Rarity.Uncommon, "Ike", 3, 2, 2)},
-        {CardID.Ness, new CardConfig(Rarity.Uncommon, "Ness", 2, 1, 1)},
-        {CardID.Bowser, new CardConfig(Rarity.Uncommon, "Bowser", 1, 1, 1)},
-        {CardID.Wolf, new CardConfig(Rarity.Uncommon, "Wolf", 1, 1, 1)},
-        {CardID.Falco, new CardConfig(Rarity.Rare, "Falco", 2, 3, 3)},
-        {CardID.Jigglypuff, new CardConfig(Rarity.Rare, "Jigglypuff", 2, 4, 3)},
-        {CardID.Cloud, new CardConfig(Rarity.Rare, "Cloud", 1, 1, 1)},
-        {CardID.Mario, new CardConfig(Rarity.Rare, "Mario", 1, 1, 1)},
-        {CardID.Byleth, new CardConfig(Rarity.Epic, "Byleth", 3, 4, 4)},
-        {CardID.ROB, new CardConfig(Rarity.Epic, "R.O.B.", 4, 3, 4)},
-        {CardID.Samus, new CardConfig(Rarity.Epic, "Samus", 1, 1, 1)},
-        {CardID.Joker, new CardConfig(Rarity.Legendary, "Joker", 5, 4, 5)},
-        {CardID.Pyra, new CardConfig(Rarity.Legendary, "Pyra", 5, 4, 5)},
-        {CardID.Null, new CardConfig(Rarity.Null, "Null", 0, 0, 0)}
+        {CardID.DrMario, new CardConfig(Rarity.Common, "Dr. Mario", 1, 1, 1, Passive.Straight)},
+        {CardID.LittleMac, new CardConfig(Rarity.Common, "Little Mac", 1, 1, 1, Passive.Double)},
+        {CardID.DonkeyKong, new CardConfig(Rarity.Common, "Donkey Kong", 2, 1, 1, Passive.Straight)},
+        {CardID.Steve, new CardConfig(Rarity.Common, "Steve", 1, 1, 1, Passive.Straight)},
+        {CardID.Link, new CardConfig(Rarity.Common, "Link", 1, 1, 1, Passive.Straight)},
+        {CardID.Fox, new CardConfig(Rarity.Common, "Fox", 2, 1, 1, Passive.Fast)},
+        {CardID.CaptainFalcon, new CardConfig(Rarity.Common, "Captain Falcon", 1, 1, 1, Passive.Straight)},
+        {CardID.Peach, new CardConfig(Rarity.Common, "Peach", 1, 1, 1, Passive.Straight)},
+        {CardID.Roy, new CardConfig(Rarity.Common, "Roy", 2, 1, 1, Passive.Double)},
+        {CardID.Kirby, new CardConfig(Rarity.Common, "Kirby", 2, 2, 2, Passive.Straight)},
+        {CardID.Yoshi, new CardConfig(Rarity.Common, "Yoshi", 1, 1, 1, Passive.Straight)},
+        {CardID.Luigi, new CardConfig(Rarity.Common, "Luigi", 1, 1, 1, Passive.InstaKill)},
+        {CardID.MewTwo, new CardConfig(Rarity.Uncommon, "MewTwo", 1, 3, 2, Passive.Dodge)},
+        {CardID.Pikachu, new CardConfig(Rarity.Uncommon, "Pikachu", 1, 1, 1, Passive.Straight)},
+        {CardID.Ike, new CardConfig(Rarity.Uncommon, "Ike", 3, 2, 2, Passive.Area)},
+        {CardID.Ness, new CardConfig(Rarity.Uncommon, "Ness", 2, 1, 1, Passive.Area)},
+        {CardID.Bowser, new CardConfig(Rarity.Uncommon, "Bowser", 1, 1, 1, Passive.Regen)},
+        {CardID.Wolf, new CardConfig(Rarity.Uncommon, "Wolf", 1, 1, 1, Passive.Double)},
+        {CardID.Falco, new CardConfig(Rarity.Rare, "Falco", 2, 3, 3, Passive.Dodge)},
+        {CardID.Jigglypuff, new CardConfig(Rarity.Rare, "Jigglypuff", 2, 4, 3, Passive.InstaKill)},
+        {CardID.Cloud, new CardConfig(Rarity.Rare, "Cloud", 1, 1, 1, Passive.Fast)},
+        {CardID.Mario, new CardConfig(Rarity.Rare, "Mario", 1, 1, 1, Passive.Straight)},
+        {CardID.Byleth, new CardConfig(Rarity.Epic, "Byleth", 3, 4, 4, Passive.Area)},
+        {CardID.ROB, new CardConfig(Rarity.Epic, "R.O.B.", 4, 3, 4, Passive.Straight)},
+        {CardID.Samus, new CardConfig(Rarity.Epic, "Samus", 1, 1, 1, Passive.Piercing)},
+        {CardID.Joker, new CardConfig(Rarity.Legendary, "Joker", 5, 4, 5, Passive.Regen)},
+        {CardID.Pyra, new CardConfig(Rarity.Legendary, "Pyra", 5, 4, 5, Passive.InstaKill)},
+        {CardID.Null, new CardConfig(Rarity.Null, "Null", 0, 0, 0, Passive.Straight)}
     };
 
+    public static readonly Dictionary<Passive, string> PassiveDescriptions = new Dictionary<Passive, string> {
+        {Passive.Null, "Null"},
+        {Passive.Straight, "Attacks directly ahead"},
+        {Passive.Area, "Attacks in a wide area"},
+        {Passive.Piercing, "Attacks pierce through enemies"},
+        {Passive.InstaKill, "Chance to instantly kill"},
+        {Passive.Regen, "Regenerates 1 health per turn"},
+        {Passive.Fast, "Always attacks first"},
+        {Passive.Dodge, "Chance to dodge enemy attack"},
+        {Passive.Double, "Chance to deal double damage"}
+    };
 
     public static void init()
     {
