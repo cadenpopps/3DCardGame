@@ -1,6 +1,6 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 [System.Serializable]
 
 public class BoardSpace : MonoBehaviour
@@ -15,6 +15,11 @@ public class BoardSpace : MonoBehaviour
 	
 	public void reset() {
 		occupied = false;
-		card = null;
+        if (card != null)
+        {
+            card.CardObject.transform.parent = null;
+            Destroy(card.CardObject);
+            card = null;
+        }
 	}
 }

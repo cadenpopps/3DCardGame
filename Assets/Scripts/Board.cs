@@ -9,46 +9,51 @@ public class Board : MonoBehaviour
 
     public static readonly int BoardWidth = 4;
     public static readonly int BoardHeight = 2;
-
     public BoardSpace[,] spaces;
-
     public GameObject BoardObject;
+    public GameObject BoardSpace1;
+    public GameObject BoardSpace2;
+    public GameObject BoardSpace3;
+    public GameObject BoardSpace4;
+    public GameObject BoardSpace5;
+    public GameObject BoardSpace6;
+    public GameObject BoardSpace7;
+    public GameObject BoardSpace8;
 
-
-    void Awake() { }
-
-    // Start is called before the first frame update
-    void Start() { }
+    void Awake()
+    {
+        spaces = new BoardSpace[BoardHeight, BoardWidth];
+        spaces[0, 0] = BoardSpace1.GetComponent<BoardSpace>() as BoardSpace;
+        spaces[0, 1] = BoardSpace2.GetComponent<BoardSpace>() as BoardSpace;
+        spaces[0, 2] = BoardSpace3.GetComponent<BoardSpace>() as BoardSpace;
+        spaces[0, 3] = BoardSpace4.GetComponent<BoardSpace>() as BoardSpace;
+        spaces[1, 0] = BoardSpace5.GetComponent<BoardSpace>() as BoardSpace;
+        spaces[1, 1] = BoardSpace6.GetComponent<BoardSpace>() as BoardSpace;
+        spaces[1, 2] = BoardSpace7.GetComponent<BoardSpace>() as BoardSpace;
+        spaces[1, 3] = BoardSpace8.GetComponent<BoardSpace>() as BoardSpace;
+    }
 
     public void init()
     {
-        spaces = new BoardSpace[BoardHeight, BoardWidth];
-        for (int row = 0; row < BoardHeight; row++)
+        for (int col = 0; col < BoardWidth; col++)
         {
-            for (int col = 0; col < BoardWidth; col++)
-            {
-                spaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString()).GetComponent<BoardSpace>() as BoardSpace;
-                spaces[row, col].init();
-            }
+            spaces[0, col].init();
+            spaces[1, col].init();
         }
+        this.reset();
+        // spaces = new BoardSpace[BoardHeight, BoardWidth];
+        // for (int row = 0; row < BoardHeight; row++)
+        // {
+        //     for (int col = 0; col < BoardWidth; col++)
+        //     {
+        //         spaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString()).GetComponent<BoardSpace>() as BoardSpace;
+        //         spaces[row, col].init();
+        //     }
+        // }
     }
 
     public void reset()
     {
-        spaces = new BoardSpace[BoardHeight, BoardWidth];
-        for (int row = 0; row < BoardHeight; row++)
-        {
-            for (int col = 0; col < BoardWidth; col++)
-            {
-                spaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString()).GetComponent<BoardSpace>() as BoardSpace;
-            }
-        }
-        Card[] cardObjects = BoardObject.GetComponentsInChildren<Card>();
-        for (int i = 0; i < cardObjects.Length; i++)
-        {
-            cardObjects[i].CardObject.transform.parent = null;
-            Destroy(cardObjects[i].CardObject);
-        }
         for (int col = 0; col < BoardWidth; col++)
         {
             spaces[0, col].reset();
@@ -247,7 +252,7 @@ public class Board : MonoBehaviour
     private void destroy(BoardSpace space)
     {
         space.occupied = false;
-        Destroy(space.card.cardDisplay.CardPrefab);
+        Destroy(space.card.CardObject);
         space.card = null;
     }
 

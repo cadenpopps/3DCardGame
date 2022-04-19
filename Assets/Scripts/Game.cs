@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 [System.Serializable]
 
 public enum Turn {
@@ -28,6 +28,7 @@ public class Config {
 	public static int DrawCardManaCost = 3;
 	public static int DeckSize = 30;
 	public static int HandSize = 5;
+    public static bool Debug = false;
 }
 
 public class Game : MonoBehaviour
@@ -43,153 +44,177 @@ public class Game : MonoBehaviour
 
 	public GameObject GameUI;
 	public GameObject PausedUI;
+    public GameObject TitleUI;
 
 	private Turn turn;
 	private GameState gameState = GameState.TitleScreen;
-	private IEnumerator runRoutine;
+    private IEnumerator runRoutine;
 
 
 	void Awake() {
 		CardDatabase.init();
 	}
 
-	void Start() {
-		runRoutine = this.run();
-		this.init();
-		this.newGame();
+    void Start()
+    {
+        runRoutine = run();
+        this.init();
 	}
 
-	void Update() {
-		if(gameState == GameState.Running) {
-			this.updateUI();
-		}
-	}
 
-	void init() {
-		boardObject.SetActive(false);
-		playerObject.SetActive(false);
-		cpuObject.SetActive(false);
-		this.newGame();
-	}
+    void init()
+    {
+        TitleUI.SetActive(true);
+    }
 
-	void newGame() {
-		StopCoroutine(runRoutine);
+    void newGame()
+    {
+        StopCoroutine(runRoutine);
 
-		PausedUI.SetActive(false);
-		GameUI.SetActive(true);
-		boardObject.SetActive(true);
-		playerObject.SetActive(true);
-		cpuObject.SetActive(true);
-		GameUI.SetActive(true);
+        TitleUI.SetActive(false);
+        PausedUI.SetActive(false);
+        GameUI.SetActive(true);
+        boardObject.SetActive(true);
+        playerObject.SetActive(true);
+        cpuObject.SetActive(true);
+        GameUI.SetActive(true);
 
-		player.init();
-		cpu.init();
-		board.init();
+        player.init();
+        cpu.init();
+        board.init();
 
-		turn = Turn.Player;
-		gameState = GameState.Running;
-		player.beginTurn(board);
-		StartCoroutine(runRoutine);
-	}
+        turn = Turn.Player;
+        gameState = GameState.Running;
+        player.beginTurn(board);
 
-	IEnumerator run() {
-		while(gameState == GameState.Running) {
-			if(this.turn == Turn.Player) {
-				Debug.Log("PlayerTurn loop");
-				yield return new WaitForSeconds(2);
-			}
-			else if (this.turn == Turn.CPU) {
-				Debug.Log("CPUTurn loop");
-				cpu.beginTurn(board);
-				yield return new WaitForSeconds(.5f);
-				board.runGameLogic(cpu, player);
-				yield return new WaitForSeconds(.5f);
-				this.runGameLogic();
-				player.beginTurn(board);
-			}
-		}
-	}
+        StartCoroutine(runRoutine);
+    }
 
-	void runGameLogic() {
-		if(player.health <= 0 || cpu.health <= 0) {
-			gameState = GameState.GameOver;
-			Debug.Log("--- Game Over ---");
-		}
-		player.mana = Math.Min(10, player.mana + 3);
-		cpu.mana = Math.Min(10, cpu.mana + 3);
-		this.updateUI();
-		this.changeTurn();
-	}
+    IEnumerator run()
+    {
+        while (gameState == GameState.Running)
+        {
+            if (this.turn == Turn.Player)
+            {
+                Debug.Log("Waiting for player to end turn.");
+                yield return new WaitForSeconds(1.5f);
+            }
+            else if (this.turn == Turn.CPU)
+            {
+                cpu.beginTurn(board);
+                yield return new WaitForSeconds(1.5f);
+                board.runGameLogic(cpu, player);
+                yield return new WaitForSeconds(.5f);
+                this.runGameLogic();
+                player.beginTurn(board);
+            }
+        }
+    }
 
-	void updateUI() {
-		player.updateUI();
-		cpu.updateUI();
-	}
+    void runGameLogic()
+    {
+        if (player.health <= 0 || cpu.health <= 0)
+        {
+            gameState = GameState.GameOver;
+            Debug.Log("--- Game Over ---");
+        }
+        player.mana = Math.Min(10, player.mana + 3);
+        cpu.mana = Math.Min(10, cpu.mana + 3);
+        this.updateUI();
+        this.changeTurn();
+    }
 
-	public void exitGameButton() {
-		Application.Quit();
-	}
+    void updateUI()
+    {
+        player.updateUI();
+        cpu.updateUI();
+    }
 
-	public void newGameButton() {
-		this.newGame();
-	}
+    public void exitGameButton()
+    {
+        Application.Quit();
+    }
 
-	public void pause() {
-		gameState = GameState.Paused;
-		this.showPausedUI();
-	}
+    public void newGameButton()
+    {
+        this.newGame();
+    }
 
-	public void resume() {
-		gameState = GameState.Running;
-		this.hidePausedUI();
-	}
+    public void pause()
+    {
+        this.showPausedUI();
+        gameState = GameState.Paused;
+        StopCoroutine(runRoutine);
+    }
 
-	void showPausedUI() {
-		// pause screen. enable
-		GameUI.SetActive(false);
-		PausedUI.SetActive(true);
-	}
+    public void resume()
+    {
+        this.hidePausedUI();
+        gameState = GameState.Running;
+        StartCoroutine(runRoutine);
+    }
 
-	void hidePausedUI() {
-		// pause screen. enable
-		PausedUI.SetActive(false);
-		GameUI.SetActive(true);
-	}
+    void showPausedUI()
+    {
+        // pause screen. enable
+        GameUI.SetActive(false);
+        PausedUI.SetActive(true);
+    }
 
-	void changeTurn() {
-		if(turn == Turn.Player) {
-			turn = Turn.CPU;
-		}
-		else if(turn == Turn.CPU) {
-			turn = Turn.Player;
-		}
-	}
+    void hidePausedUI()
+    {
+        // pause screen. enable
+        PausedUI.SetActive(false);
+        GameUI.SetActive(true);
+    }
 
-	void Update() {
-		if(gameState == GameState.TitleScreen || gameState == GameState.GameOver) {
-			if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.N)){
-				this.newGame();
-			}
-		}
-		else if(gameState == GameState.Paused) {
-			if(Input.GetKeyDown(KeyCode.Escape)) {
-				this.resume();
-			}
-		}
-		else if(gameState == GameState.Running) {
+    void changeTurn()
+    {
+        if (turn == Turn.Player)
+        {
+            turn = Turn.CPU;
+        }
+        else if (turn == Turn.CPU)
+        {
+            turn = Turn.Player;
+        }
+    }
+
+    void Update()
+    {
+        if (gameState == GameState.TitleScreen || gameState == GameState.GameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.N))
+            {
+                this.newGame();
+            }
+        }
+        else if (gameState == GameState.Paused)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                this.resume();
+            }
+        }
+        else if (gameState == GameState.Running)
+        {
+            this.updateUI();
 			if(this.turn == Turn.Player){
 				if(Input.GetKeyDown(KeyCode.Escape)) {
 					this.pause();
 				}
-				else if(Input.GetKeyDown(KeyCode.P)) {
+                else if (Config.Debug && Input.GetKeyDown(KeyCode.P))
+                {
 					player.mana += 10;
 					this.updateUI();
 				}
-				else if(Input.GetKeyDown(KeyCode.O)) {
+                else if (Config.Debug && Input.GetKeyDown(KeyCode.O))
+                {
 					player.health += 10;
 					this.updateUI();
 				}
-				else if(Input.GetKeyDown(KeyCode.I)) {
+                else if (Config.Debug && Input.GetKeyDown(KeyCode.I))
+                {
 					cpu.health -= 10;
 					this.updateUI();
 				}

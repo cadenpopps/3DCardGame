@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 
-public class Deck : MonoBehaviour {
-
+public class Deck : MonoBehaviour
+{
 	public Card[] deck;
 	public GameObject DeckObject;
     public GameObject DeckPrefab;
@@ -25,7 +25,8 @@ public class Deck : MonoBehaviour {
 	}
 
 	public void fillDeck() {
-		for(int i = 0; i < Config.DeckSize; i++){
+        for (int i = 0; i < Config.DeckSize; i++)
+        {
 			Card newCard = CardDatabase.generateRandomCard(CardPrefab);
 			newCard.CardObject.transform.parent = DeckObject.transform;
 			newCard.CardObject.transform.localPosition = new Vector3(0, 0, 0);
@@ -34,8 +35,10 @@ public class Deck : MonoBehaviour {
 	}
 
 	public Card draw() {
-		for(int i = 0; i < DeckSize; i++) {
-			if(deck[i] != null) {
+        for (int i = 0; i < Config.DeckSize; i++)
+        {
+            if (deck[i] != null)
+            {
 				Card drawCard = deck[i];
 				deck[i] = null;
 				return drawCard;

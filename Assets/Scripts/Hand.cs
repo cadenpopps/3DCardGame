@@ -1,6 +1,6 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 [System.Serializable]
 
 public class Hand : MonoBehaviour
@@ -37,10 +37,11 @@ public class Hand : MonoBehaviour
 		}
 	}
 
-	public void drawOne(Deck deck) {
+    public void draw(Deck deck)
+    {
 		for(int i = 0; i < HandSize; i++) {
 			if(cards[i] == null) {
-				Card drawnCard = deck.drawTop();
+                Card drawnCard = deck.draw();
 				if(!addCardToHand(drawnCard)) {
 					Debug.Log("Couldn't add card");
 				}
@@ -54,7 +55,7 @@ public class Hand : MonoBehaviour
 	private void fillHand(Deck deck) {
 		for(int i = 0; i < InitialHandSize; i++) {
 			if(!isHandFull()) {
-				Card drawnCard = deck.drawTop();
+                Card drawnCard = deck.draw();
 				if(!addCardToHand(drawnCard)) {
 					Debug.Log("Couldn't add card " + drawnCard.name + " to hand.");
 				}

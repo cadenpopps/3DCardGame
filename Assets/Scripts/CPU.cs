@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+using UnityEngine;
 
 public class CPU : MonoBehaviour
 {
@@ -15,19 +15,18 @@ public class CPU : MonoBehaviour
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI manaText;
 
-    public void init(){
-        health = 30;
-        mana = 3;
-        // mana = GameConfig.StartingMana;
-        deck.init();
-        hand.init(deck); 
-        this.resetUI();
-        this.updateUI();
+    public void init()
+    {
+        this.reset();
     }
 
-    public void reset() {
-        deck.reset();
-        hand.reset();
+    public void reset()
+    {
+        health = Config.StartingHealth;
+        mana = Config.StartingMana;
+        deck.init();
+        hand.init(deck);
+        this.resetUI();
     }
 
 	public void updateUI() {
@@ -57,68 +56,81 @@ public class CPU : MonoBehaviour
     
     public void beginTurn(Board board) {
         Debug.Log("--- CPU turn ---");
-        hand.drawOne(deck);
         hand.resetDisplay();
         hand.display();
-        if(mana >= 8) {
+        if (mana >= 8)
+        {
             this.drawCard();
         }
         int turnCounter = 0;
-        while(turnCounter < 3 && mana >= 1 && hand.getNumCardsInHand() >= 1 && board.cardsOnRow(1) < board.cardsOnRow(0)) {
+        while (turnCounter < 3 && mana >= 1 && hand.getNumCardsInHand() >= 1 && board.cardsOnRow(1) < board.cardsOnRow(0))
+        {
             turnCounter++;
             //make suer to make this random
             this.selectCard(board);
-            if(hand.currentlySelected > -1) {
+            if (hand.currentlySelected > -1)
+            {
                 this.playCard(board);
             }
         }
         this.endTurn();
     }
 
-    public void endTurn() {
+    public void endTurn()
+    {
         hand.resetDisplay();
     }
-    
-    public void hoverCard(Direction d) {
+
+    public void hoverCard(Direction d)
+    {
         hand.hoverCard(d);
     }
-    
-    public void moveSelected(Direction d, Board board) {
+
+    public void moveSelected(Direction d, Board board)
+    {
         hand.moveSelected(d, board);
     }
 
-    public void selectCard(Board b) {
+    public void selectCard(Board b)
+    {
         hand.selectCard(1, b);
     }
-    
-    public void deselectCard() {
+
+    public void deselectCard()
+    {
         hand.deselectCard();
     }
 
-    public bool playCard(Board board) {
-        if(mana >= hand.cards[hand.currentlySelected].manaCost) {
+    public bool playCard(Board board)
+    {
+        if (mana >= hand.cards[hand.currentlySelected].manaCost)
+        {
             mana -= hand.cards[hand.currentlySelected].manaCost;
             hand.playCard(board);
             this.updateUI();
             return true;
         }
-        else {
+        else
+        {
             Debug.Log("Not enough mana to play this card!");
             manaText.color = Color.red;
             return false;
         }
     }
 
-    public void drawCard() {
+    public void drawCard()
+    {
         // if(mana >= GameConfig.DrawCardManaCost) {
-        if(mana < 3) {
+        if (mana < 3)
+        {
             Debug.Log("Not enough mana to draw a card!");
             manaText.color = Color.red;
         }
-        else if(mana >= 3 && !hand.isHandFull()) {
+        else if (mana >= 3 && !hand.isHandFull())
+        {
             mana -= 3;
             // mana -= GameConfig.DrawCardManaCost;
-            hand.drawOne(deck);
+            hand.draw(deck);
         }
     }
 }

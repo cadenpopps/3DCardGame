@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 [System.Serializable]
 
 public class Player : MonoBehaviour
@@ -29,76 +29,92 @@ public class Player : MonoBehaviour
     public void beginTurn(Board b) {
         Debug.Log("--- Player turn ---");
         this.resetUI();
-        hand.drawOne(deck);
+        hand.draw(deck);
         hand.resetDisplay();
     }
 
-	public void updateUI() {
+    public void updateUI()
+    {
         manaText.text = mana.ToString();
         healthText.text = health.ToString();
-        if(health < 10) {
+        if (health < 10)
+        {
             healthText.color = Color.red;
         }
     }
 
-	public void resetUI() {
+    public void resetUI()
+    {
         manaText.color = Color.white;
         healthText.color = Color.white;
         manaText.text = mana.ToString();
         healthText.text = health.ToString();
     }
 
-    public void toggleDisplayHand() {
-        if(hand.displayingHand) {
+    public void toggleDisplayHand()
+    {
+        if (hand.displayingHand)
+        {
             hand.hide();
         }
-        else {
+        else
+        {
             hand.display();
         }
     }
 
 
 
-    public void hoverCard(Direction d) {
+    public void hoverCard(Direction d)
+    {
         hand.hoverCard(d);
     }
 
-    public void moveSelected(Direction d, Board board) {
+    public void moveSelected(Direction d, Board board)
+    {
         hand.moveSelected(d, board);
     }
 
-    public void selectCard(Board b) {
+    public void selectCard(Board b)
+    {
         hand.selectCard(0, b);
     }
 
-    public void deselectCard() {
+    public void deselectCard()
+    {
         hand.deselectCard();
     }
 
-    public bool playCard(Board board) {
-        if(mana >= hand.cards[hand.currentlySelected].manaCost) {
+    public bool playCard(Board board)
+    {
+        if (mana >= hand.cards[hand.currentlySelected].manaCost)
+        {
             mana -= hand.cards[hand.currentlySelected].manaCost;
             hand.playCard(board);
             this.updateUI();
             return true;
         }
-        else {
+        else
+        {
             Debug.Log("Not enough mana to play this card!");
             manaText.color = Color.red;
             return false;
         }
     }
 
-    public void drawCard() {
+    public void drawCard()
+    {
         // if(mana >= GameConfig.DrawCardManaCost) {
-        if(mana < 3) {
+        if (mana < 3)
+        {
             Debug.Log("Not enough mana to draw a card!");
             manaText.color = Color.red;
         }
-        else if(mana >= 3 && !hand.isHandFull()) {
+        else if (mana >= 3 && !hand.isHandFull())
+        {
             mana -= 3;
             // mana -= GameConfig.DrawCardManaCost;
-            hand.drawOne(deck);
+            hand.draw(deck);
         }
     }
 
