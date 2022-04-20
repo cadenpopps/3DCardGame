@@ -180,7 +180,8 @@ public class Hand : MonoBehaviour
 	public void selectCard(int row, Board board) {
 		if(this.getNumCardsInHand() > 0 && cards[currentlyHovered] != null && board.getFirstAvailableSpace(row) != null) {
 			displayingSelected = true;
-			currentlySelected = currentlyHovered;
+            currentlySelected = currentlyHovered;
+            cards[currentlySelected].currentlySelected = true;
 			cards[currentlySelected].selectedBoardSpace = board.getFirstAvailableSpace(row);
 		}
 	}

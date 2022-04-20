@@ -66,7 +66,6 @@ public class CPU : MonoBehaviour
         while (turnCounter < 3 && mana >= 1 && hand.getNumCardsInHand() >= 1 && board.cardsOnRow(1) < board.cardsOnRow(0))
         {
             turnCounter++;
-            //make suer to make this random
             this.selectCard(board);
             if (hand.currentlySelected > -1)
             {
