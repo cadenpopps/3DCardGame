@@ -65,6 +65,7 @@ public class Board : MonoBehaviour
     {
         if (!selectedBoardSpace.occupied)
         {
+            card.enableHandPrefab();
             selectedBoardSpace.card = card;
             selectedBoardSpace.occupied = true;
             card.CardObject.transform.parent = selectedBoardSpace.boardSpaceObject.transform;

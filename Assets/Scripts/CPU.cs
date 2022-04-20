@@ -56,20 +56,23 @@ public class CPU : MonoBehaviour
     
     public void beginTurn(Board board) {
         Debug.Log("--- CPU turn ---");
+        this.drawCardFree();
         hand.resetDisplay();
-        hand.display();
         if (mana >= 8)
         {
             this.drawCard();
         }
-        int turnCounter = 0;
-        while (turnCounter < 3 && mana >= 1 && hand.getNumCardsInHand() >= 1 && board.cardsOnRow(1) < board.cardsOnRow(0))
+        while (mana >= 1 && hand.getNumCardsInHand() >= 1 && board.cardsOnRow(1) < board.cardsOnRow(0))
         {
-            turnCounter++;
-            this.selectCard(board);
-            if (hand.currentlySelected > -1)
+            hand.updateHover();
+            if (hand.currentlyHovered > -1)
             {
-                this.playCard(board);
+                this.selectCard(board);
+                if (!this.playCard(board))
+                {
+                    this.endTurn();
+                    return;
+                }
             }
         }
         this.endTurn();
@@ -119,16 +122,22 @@ public class CPU : MonoBehaviour
 
     public void drawCard()
     {
-        // if(mana >= GameConfig.DrawCardManaCost) {
-        if (mana < 3)
+        if (mana < Config.DrawCardManaCost)
         {
             Debug.Log("Not enough mana to draw a card!");
             manaText.color = Color.red;
         }
-        else if (mana >= 3 && !hand.isHandFull())
+        else if (mana >= Config.DrawCardManaCost && !hand.isHandFull())
         {
-            mana -= 3;
-            // mana -= GameConfig.DrawCardManaCost;
+            mana -= Config.DrawCardManaCost;
+            hand.draw(deck);
+        }
+    }
+
+    public void drawCardFree()
+    {
+        if (!hand.isHandFull())
+        {
             hand.draw(deck);
         }
     }

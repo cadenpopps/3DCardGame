@@ -1,65 +1,74 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 [System.Serializable]
 
-public enum Turn {
-	Player,
-	CPU,
+public enum Turn
+{
+    Player,
+    CPU,
 };
 
-public enum Direction {
-	Left,
-	Right
+public enum Direction
+{
+    Left,
+    Right
 };
 
-public enum GameState {
-	TitleScreen,
-	Running,
-	Paused,
-	GameOver
+public enum GameState
+{
+    TitleScreen,
+    Running,
+    Paused,
+    GameOver
 };
 
-public class Config {
-	public static int StartingHealth = 25;
-	public static int StartingMana = 3;
-	public static int ManaRegen = 3;
-	public static int DrawCardManaCost = 3;
-	public static int DeckSize = 30;
-	public static int HandSize = 5;
+public class Config
+{
+    public static int StartingHealth = 25;
+    public static int StartingMana = 3;
+    public static int ManaRegen = 3;
+    public static int DrawCardManaCost = 3;
+    public static int DeckSize = 30;
+    public static int HandSize = 5;
     public static bool Debug = false;
 }
 
 public class Game : MonoBehaviour
 {
 
-	public Player player;
-	public CPU cpu;
-	public Board board;
+    public Player player;
+    public CPU cpu;
+    public Board board;
 
-	public GameObject playerObject;
-	public GameObject cpuObject;
-	public GameObject boardObject;
+    public GameObject playerObject;
+    public GameObject cpuObject;
+    public GameObject boardObject;
 
-	public GameObject GameUI;
-	public GameObject PausedUI;
+    public GameObject GameUI;
+    public GameObject PausedUI;
     public GameObject TitleUI;
+    public GameObject GameOverUI;
+    public GameObject MasterHandImage;
+    public TextMeshProUGUI GameOverText;
 
-	private Turn turn;
-	private GameState gameState = GameState.TitleScreen;
+    private Turn turn;
+    private GameState gameState = GameState.TitleScreen;
     private IEnumerator runRoutine;
 
 
-	void Awake() {
-		CardDatabase.init();
-	}
+    void Awake()
+    {
+        CardDatabase.init();
+    }
 
     void Start()
     {
         runRoutine = run();
         this.init();
-	}
+    }
 
 
     void init()
@@ -73,11 +82,11 @@ public class Game : MonoBehaviour
 
         TitleUI.SetActive(false);
         PausedUI.SetActive(false);
+        GameOverUI.SetActive(false);
         GameUI.SetActive(true);
         boardObject.SetActive(true);
         playerObject.SetActive(true);
         cpuObject.SetActive(true);
-        GameUI.SetActive(true);
 
         player.init();
         cpu.init();
@@ -109,6 +118,11 @@ public class Game : MonoBehaviour
                 player.beginTurn(board);
             }
         }
+        if (gameState == GameState.GameOver)
+        {
+            this.updateGameOverUI();
+            this.showGameOverUI();
+        }
     }
 
     void runGameLogic()
@@ -118,16 +132,32 @@ public class Game : MonoBehaviour
             gameState = GameState.GameOver;
             Debug.Log("--- Game Over ---");
         }
-        player.mana = Math.Min(10, player.mana + 3);
-        cpu.mana = Math.Min(10, cpu.mana + 3);
-        this.updateUI();
-        this.changeTurn();
+        else
+        {
+            player.mana = Math.Min(10, player.mana + 3);
+            cpu.mana = Math.Min(10, cpu.mana + 3);
+            this.updateUI();
+            this.changeTurn();
+        }
     }
 
     void updateUI()
     {
         player.updateUI();
         cpu.updateUI();
+    }
+
+    void updateGameOverUI()
+    {
+        if (cpu.health <= 0)
+        {
+            GameOverText.text = "YOU WIN";
+        }
+        else if (player.health <= 0)
+        {
+            GameOverText.text = "MASTER HAND WINS";
+            MasterHandImage.SetActive(true);
+        }
     }
 
     public void exitGameButton()
@@ -156,16 +186,26 @@ public class Game : MonoBehaviour
 
     void showPausedUI()
     {
-        // pause screen. enable
         GameUI.SetActive(false);
         PausedUI.SetActive(true);
     }
 
     void hidePausedUI()
     {
-        // pause screen. enable
         PausedUI.SetActive(false);
         GameUI.SetActive(true);
+    }
+
+    void showGameOverUI()
+    {
+        GameUI.SetActive(false);
+        GameOverUI.SetActive(true);
+    }
+
+    void hideGameOverUI()
+    {
+        MasterHandImage.SetActive(false);
+        GameOverUI.SetActive(false);
     }
 
     void changeTurn()
@@ -199,71 +239,90 @@ public class Game : MonoBehaviour
         else if (gameState == GameState.Running)
         {
             this.updateUI();
-			if(this.turn == Turn.Player){
-				if(Input.GetKeyDown(KeyCode.Escape)) {
-					this.pause();
-				}
+            if (this.turn == Turn.Player)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    this.pause();
+                }
                 else if (Config.Debug && Input.GetKeyDown(KeyCode.P))
                 {
-					player.mana += 10;
-					this.updateUI();
-				}
+                    player.mana += 10;
+                    this.updateUI();
+                }
                 else if (Config.Debug && Input.GetKeyDown(KeyCode.O))
                 {
-					player.health += 10;
-					this.updateUI();
-				}
+                    player.health += 10;
+                    this.updateUI();
+                }
                 else if (Config.Debug && Input.GetKeyDown(KeyCode.I))
                 {
-					cpu.health -= 10;
-					this.updateUI();
-				}
-				else if(Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Backslash)) {
-					player.drawCard();
-				}
-				else if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) {
-					if(player.hand.displayingHand) {
-						if(player.hand.displayingSelected) {
-							player.moveSelected(Direction.Left, board);
-						}
-						else {
-							player.hoverCard(Direction.Left);
-						}
-					}
-				}
-				else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) {
-					if(player.hand.displayingHand) {
-						if(player.hand.displayingSelected) {
-							player.moveSelected(Direction.Right, board);
-						}
-						else {
-							player.hoverCard(Direction.Right);
-						}
-					}
-				}
-				else if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
-					if(player.hand.displayingHand) {
-						if(player.hand.displayingSelected) {
-							player.playCard(board);
-						}
-						else {
-							player.selectCard(board);
-						}
-					}
-				}
-				else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) {
-					if(player.hand.displayingHand) {
-						player.deselectCard();
-					}
-				}
-				else if(Input.GetKeyDown(KeyCode.Q)){
-					player.toggleDisplayHand();
-				}
-				else if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.E)) {
-					player.endTurn();
-					this.changeTurn();
-				}
-			}
-		}
-	}
+                    cpu.health -= 10;
+                    this.updateUI();
+                }
+                else if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Backslash))
+                {
+                    player.drawCard();
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                {
+                    if (player.hand.displayingHand)
+                    {
+                        if (player.hand.displayingSelected)
+                        {
+                            player.moveSelected(Direction.Left, board);
+                        }
+                        else
+                        {
+                            player.hoverCard(Direction.Left);
+                        }
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                {
+                    if (player.hand.displayingHand)
+                    {
+                        if (player.hand.displayingSelected)
+                        {
+                            player.moveSelected(Direction.Right, board);
+                        }
+                        else
+                        {
+                            player.hoverCard(Direction.Right);
+                        }
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                {
+                    if (player.hand.displayingHand)
+                    {
+                        if (player.hand.displayingSelected)
+                        {
+                            player.playCard(board);
+                        }
+                        else
+                        {
+                            player.selectCard(board);
+                        }
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+                {
+                    if (player.hand.displayingHand)
+                    {
+                        player.deselectCard();
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    player.toggleDisplayHand();
+                }
+                else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.E))
+                {
+                    player.endTurn();
+                    this.changeTurn();
+                }
+            }
+        }
+    }
 }

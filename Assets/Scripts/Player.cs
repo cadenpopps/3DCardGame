@@ -28,8 +28,13 @@ public class Player : MonoBehaviour
 
     public void beginTurn(Board b) {
         Debug.Log("--- Player turn ---");
+        this.drawCardFree();
         this.resetUI();
-        hand.draw(deck);
+        hand.resetDisplay();
+    }
+
+    public void endTurn()
+    {
         hand.resetDisplay();
     }
 
@@ -104,21 +109,24 @@ public class Player : MonoBehaviour
 
     public void drawCard()
     {
-        // if(mana >= GameConfig.DrawCardManaCost) {
-        if (mana < 3)
+        if (mana < Config.DrawCardManaCost)
         {
             Debug.Log("Not enough mana to draw a card!");
             manaText.color = Color.red;
         }
-        else if (mana >= 3 && !hand.isHandFull())
+        else if (mana >= Config.DrawCardManaCost && !hand.isHandFull())
         {
-            mana -= 3;
-            // mana -= GameConfig.DrawCardManaCost;
+            mana -= Config.DrawCardManaCost;
             hand.draw(deck);
         }
     }
 
-    public void endTurn() {
-        hand.resetDisplay();
+    public void drawCardFree()
+    {
+        if (!hand.isHandFull())
+        {
+            hand.draw(deck);
+        }
     }
+
 }
