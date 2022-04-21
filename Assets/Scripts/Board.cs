@@ -35,29 +35,15 @@ public class Board : MonoBehaviour
 
     public void init()
     {
-        for (int col = 0; col < BoardWidth; col++)
-        {
-            spaces[0, col].init();
-            spaces[1, col].init();
-        }
         this.reset();
-        // spaces = new BoardSpace[BoardHeight, BoardWidth];
-        // for (int row = 0; row < BoardHeight; row++)
-        // {
-        //     for (int col = 0; col < BoardWidth; col++)
-        //     {
-        //         spaces[row, col] = GameObject.Find("BoardSpace" + ((row * BoardWidth) + col + 1).ToString()).GetComponent<BoardSpace>() as BoardSpace;
-        //         spaces[row, col].init();
-        //     }
-        // }
     }
 
     public void reset()
     {
         for (int col = 0; col < BoardWidth; col++)
         {
-            spaces[0, col].reset();
-            spaces[1, col].reset();
+            spaces[0, col].init();
+            spaces[1, col].init();
         }
     }
 

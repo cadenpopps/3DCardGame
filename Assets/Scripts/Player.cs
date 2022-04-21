@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         this.drawCardFree();
         this.resetUI();
         hand.resetDisplay();
+        hand.display();
     }
 
     public void endTurn()
@@ -67,8 +68,6 @@ public class Player : MonoBehaviour
             hand.display();
         }
     }
-
-
 
     public void hoverCard(Direction d)
     {

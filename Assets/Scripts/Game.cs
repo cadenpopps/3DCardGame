@@ -33,7 +33,7 @@ public class Config
     public static int DrawCardManaCost = 3;
     public static int DeckSize = 30;
     public static int HandSize = 5;
-    public static bool Debug = false;
+    public static bool Debug = true;
 }
 
 public class Game : MonoBehaviour
@@ -51,6 +51,8 @@ public class Game : MonoBehaviour
     public GameObject PausedUI;
     public GameObject TitleUI;
     public GameObject GameOverUI;
+    public GameObject ControlsUI;
+    public GameObject PreviousUI;
     public GameObject MasterHandImage;
     public TextMeshProUGUI GameOverText;
 
@@ -66,7 +68,6 @@ public class Game : MonoBehaviour
 
     void Start()
     {
-        runRoutine = run();
         this.init();
     }
 
@@ -78,7 +79,10 @@ public class Game : MonoBehaviour
 
     void newGame()
     {
-        StopCoroutine(runRoutine);
+        if (runRoutine != null)
+        {
+            StopCoroutine(runRoutine);
+        }
 
         TitleUI.SetActive(false);
         PausedUI.SetActive(false);
@@ -96,6 +100,7 @@ public class Game : MonoBehaviour
         gameState = GameState.Running;
         player.beginTurn(board);
 
+        runRoutine = this.run();
         StartCoroutine(runRoutine);
     }
 
@@ -115,13 +120,11 @@ public class Game : MonoBehaviour
                 board.runGameLogic(cpu, player);
                 yield return new WaitForSeconds(.5f);
                 this.runGameLogic();
-                player.beginTurn(board);
+                if (gameState == GameState.Running)
+                {
+                    player.beginTurn(board);
+                }
             }
-        }
-        if (gameState == GameState.GameOver)
-        {
-            this.updateGameOverUI();
-            this.showGameOverUI();
         }
     }
 
@@ -130,6 +133,9 @@ public class Game : MonoBehaviour
         if (player.health <= 0 || cpu.health <= 0)
         {
             gameState = GameState.GameOver;
+            this.updateGameOverUI();
+            this.showGameOverUI();
+            StopCoroutine(runRoutine);
             Debug.Log("--- Game Over ---");
         }
         else
@@ -152,6 +158,7 @@ public class Game : MonoBehaviour
         if (cpu.health <= 0)
         {
             GameOverText.text = "YOU WIN";
+            MasterHandImage.SetActive(false);
         }
         else if (player.health <= 0)
         {
@@ -168,6 +175,16 @@ public class Game : MonoBehaviour
     public void newGameButton()
     {
         this.newGame();
+    }
+
+    public void controlsButton()
+    {
+        this.showControlsUI();
+    }
+
+    public void backButton()
+    {
+        this.hideControlsUI();
     }
 
     public void pause()
@@ -206,6 +223,26 @@ public class Game : MonoBehaviour
     {
         MasterHandImage.SetActive(false);
         GameOverUI.SetActive(false);
+    }
+
+    void showControlsUI()
+    {
+        if (PausedUI.activeSelf)
+        {
+            PreviousUI = PausedUI;
+        }
+        else if (TitleUI.activeSelf)
+        {
+            PreviousUI = TitleUI;
+        }
+        PreviousUI.SetActive(false);
+        ControlsUI.SetActive(true);
+    }
+
+    void hideControlsUI()
+    {
+        ControlsUI.SetActive(false);
+        PreviousUI.SetActive(true);
     }
 
     void changeTurn()

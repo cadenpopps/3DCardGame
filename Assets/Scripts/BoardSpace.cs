@@ -10,7 +10,7 @@ public class BoardSpace : MonoBehaviour
 	public GameObject boardSpaceObject;
 
 	public void init() {
-		occupied = false;
+        this.reset();
 	}
 	
 	public void reset() {
