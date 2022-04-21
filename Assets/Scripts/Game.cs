@@ -33,6 +33,7 @@ public class Config
     public static int DrawCardManaCost = 3;
     public static int DeckSize = 30;
     public static int HandSize = 5;
+    public static int StartingHandSize = 2;
     public static bool Debug = true;
 }
 

@@ -6,7 +6,6 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     public static readonly int HandSize = 5;
-    public static readonly int InitialHandSize = 4;
 	public GameObject CardPrefab;
 
 	public Card[] cards;
@@ -53,7 +52,8 @@ public class Hand : MonoBehaviour
 	}
 
 	private void fillHand(Deck deck) {
-		for(int i = 0; i < InitialHandSize; i++) {
+        for (int i = 0; i < Config.StartingHandSize; i++)
+        {
 			if(!isHandFull()) {
                 Card drawnCard = deck.draw();
 				if(!addCardToHand(drawnCard)) {
